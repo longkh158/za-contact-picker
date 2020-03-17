@@ -16,6 +16,13 @@
 		A162360424206C91006E36C8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A162360324206C91006E36C8 /* main.m */; };
 		A162360E24206C91006E36C8 /* Contact_PickerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A162360D24206C91006E36C8 /* Contact_PickerTests.m */; };
 		A162361924206C91006E36C8 /* Contact_PickerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = A162361824206C91006E36C8 /* Contact_PickerUITests.m */; };
+		A162363224207AE9006E36C8 /* ContactService.m in Sources */ = {isa = PBXBuildFile; fileRef = A162363124207AE9006E36C8 /* ContactService.m */; };
+		A162363A2420810E006E36C8 /* ZAContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A16236392420810E006E36C8 /* ZAContact.m */; };
+		A162363F242083EE006E36C8 /* ContactDataAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = A162363E242083EE006E36C8 /* ContactDataAdapter.m */; };
+		A16236422420B184006E36C8 /* ContactTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A16236412420B184006E36C8 /* ContactTableViewController.m */; };
+		A16236472420B4EA006E36C8 /* ContactTableViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A16236462420B4EA006E36C8 /* ContactTableViewPresenter.m */; };
+		A162364B2420B71D006E36C8 /* ContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A162364A2420B71D006E36C8 /* ContactTableCell.m */; };
+		A162364E2420BBA2006E36C8 /* ContactTableCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A162364D2420BBA2006E36C8 /* ContactTableCellViewModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +61,25 @@
 		A162361424206C91006E36C8 /* Contact PickerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Contact PickerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A162361824206C91006E36C8 /* Contact_PickerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Contact_PickerUITests.m; sourceTree = "<group>"; };
 		A162361A24206C91006E36C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A162362824206E27006E36C8 /* AppConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConstants.h; sourceTree = "<group>"; };
+		A162363024207A63006E36C8 /* ContactService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactService.h; sourceTree = "<group>"; };
+		A162363124207AE9006E36C8 /* ContactService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactService.m; sourceTree = "<group>"; };
+		A162363524207D0C006E36C8 /* ZASingleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZASingleton.h; sourceTree = "<group>"; };
+		A162363824207EF5006E36C8 /* ZAContact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZAContact.h; sourceTree = "<group>"; };
+		A16236392420810E006E36C8 /* ZAContact.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZAContact.m; sourceTree = "<group>"; };
+		A162363C2420830D006E36C8 /* ContactDataAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactDataAdapter.h; sourceTree = "<group>"; };
+		A162363D24208322006E36C8 /* DataAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataAdapter.h; sourceTree = "<group>"; };
+		A162363E242083EE006E36C8 /* ContactDataAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactDataAdapter.m; sourceTree = "<group>"; };
+		A16236402420B125006E36C8 /* ContactTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTableViewController.h; sourceTree = "<group>"; };
+		A16236412420B184006E36C8 /* ContactTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewController.m; sourceTree = "<group>"; };
+		A16236442420B23C006E36C8 /* ContactTableViewPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTableViewPresenter.h; sourceTree = "<group>"; };
+		A16236452420B277006E36C8 /* ContactTableViewPresenterProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTableViewPresenterProtocol.h; sourceTree = "<group>"; };
+		A16236462420B4EA006E36C8 /* ContactTableViewPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewPresenter.m; sourceTree = "<group>"; };
+		A16236492420B67D006E36C8 /* ContactTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTableCell.h; sourceTree = "<group>"; };
+		A162364A2420B71D006E36C8 /* ContactTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTableCell.m; sourceTree = "<group>"; };
+		A162364C2420BB0E006E36C8 /* ContactTableCellViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTableCellViewModel.h; sourceTree = "<group>"; };
+		A162364D2420BBA2006E36C8 /* ContactTableCellViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTableCellViewModel.m; sourceTree = "<group>"; };
+		A162364F2420BC14006E36C8 /* ZAViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZAViewModel.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,17 +130,24 @@
 		A16235F024206C8F006E36C8 /* Contact Picker */ = {
 			isa = PBXGroup;
 			children = (
+				A16236432420B229006E36C8 /* Presenters */,
+				A162363B242082FB006E36C8 /* Adapters */,
+				A162363324207CEE006E36C8 /* Utils */,
+				A162362F24207A4F006E36C8 /* Services */,
+				A162362E24207A24006E36C8 /* Controllers */,
+				A162362C24207470006E36C8 /* View Models */,
+				A162362924206F85006E36C8 /* Models */,
+				A162362624206CFB006E36C8 /* Views */,
 				A16235F124206C8F006E36C8 /* AppDelegate.h */,
 				A16235F224206C8F006E36C8 /* AppDelegate.m */,
 				A16235F424206C8F006E36C8 /* SceneDelegate.h */,
 				A16235F524206C8F006E36C8 /* SceneDelegate.m */,
-				A16235F724206C8F006E36C8 /* ViewController.h */,
-				A16235F824206C8F006E36C8 /* ViewController.m */,
 				A16235FA24206C8F006E36C8 /* Main.storyboard */,
 				A16235FD24206C91006E36C8 /* Assets.xcassets */,
 				A16235FF24206C91006E36C8 /* LaunchScreen.storyboard */,
 				A162360224206C91006E36C8 /* Info.plist */,
 				A162360324206C91006E36C8 /* main.m */,
+				A162362824206E27006E36C8 /* AppConstants.h */,
 			);
 			path = "Contact Picker";
 			sourceTree = "<group>";
@@ -135,6 +168,106 @@
 				A162361A24206C91006E36C8 /* Info.plist */,
 			);
 			path = "Contact PickerUITests";
+			sourceTree = "<group>";
+		};
+		A162362624206CFB006E36C8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A162362D24207538006E36C8 /* Components */,
+				A162362724206D0C006E36C8 /* Screens */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A162362724206D0C006E36C8 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				A16235F724206C8F006E36C8 /* ViewController.h */,
+				A16235F824206C8F006E36C8 /* ViewController.m */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		A162362924206F85006E36C8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A162363824207EF5006E36C8 /* ZAContact.h */,
+				A16236392420810E006E36C8 /* ZAContact.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A162362C24207470006E36C8 /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				A162364C2420BB0E006E36C8 /* ContactTableCellViewModel.h */,
+				A162364D2420BBA2006E36C8 /* ContactTableCellViewModel.m */,
+				A162364F2420BC14006E36C8 /* ZAViewModel.h */,
+			);
+			path = "View Models";
+			sourceTree = "<group>";
+		};
+		A162362D24207538006E36C8 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				A16236482420B638006E36C8 /* ContactTableCell */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		A162362E24207A24006E36C8 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A16236402420B125006E36C8 /* ContactTableViewController.h */,
+				A16236412420B184006E36C8 /* ContactTableViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		A162362F24207A4F006E36C8 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A162363024207A63006E36C8 /* ContactService.h */,
+				A162363124207AE9006E36C8 /* ContactService.m */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A162363324207CEE006E36C8 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A162363524207D0C006E36C8 /* ZASingleton.h */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A162363B242082FB006E36C8 /* Adapters */ = {
+			isa = PBXGroup;
+			children = (
+				A162363C2420830D006E36C8 /* ContactDataAdapter.h */,
+				A162363E242083EE006E36C8 /* ContactDataAdapter.m */,
+				A162363D24208322006E36C8 /* DataAdapter.h */,
+			);
+			path = Adapters;
+			sourceTree = "<group>";
+		};
+		A16236432420B229006E36C8 /* Presenters */ = {
+			isa = PBXGroup;
+			children = (
+				A16236442420B23C006E36C8 /* ContactTableViewPresenter.h */,
+				A16236462420B4EA006E36C8 /* ContactTableViewPresenter.m */,
+				A16236452420B277006E36C8 /* ContactTableViewPresenterProtocol.h */,
+			);
+			path = Presenters;
+			sourceTree = "<group>";
+		};
+		A16236482420B638006E36C8 /* ContactTableCell */ = {
+			isa = PBXGroup;
+			children = (
+				A16236492420B67D006E36C8 /* ContactTableCell.h */,
+				A162364A2420B71D006E36C8 /* ContactTableCell.m */,
+			);
+			path = ContactTableCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,9 +400,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A162363224207AE9006E36C8 /* ContactService.m in Sources */,
+				A16236422420B184006E36C8 /* ContactTableViewController.m in Sources */,
+				A162364E2420BBA2006E36C8 /* ContactTableCellViewModel.m in Sources */,
 				A16235F924206C8F006E36C8 /* ViewController.m in Sources */,
 				A16235F324206C8F006E36C8 /* AppDelegate.m in Sources */,
+				A162363A2420810E006E36C8 /* ZAContact.m in Sources */,
+				A16236472420B4EA006E36C8 /* ContactTableViewPresenter.m in Sources */,
 				A162360424206C91006E36C8 /* main.m in Sources */,
+				A162364B2420B71D006E36C8 /* ContactTableCell.m in Sources */,
+				A162363F242083EE006E36C8 /* ContactDataAdapter.m in Sources */,
 				A16235F624206C8F006E36C8 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
