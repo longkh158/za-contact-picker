@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F5887B9FCC203AA6F78D720 /* libPods-Contact PickerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4252D8508D33D272ABD00 /* libPods-Contact PickerTests.a */; };
+		8026FB58957DC05C4C2EAC74 /* libPods-Contact Picker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C4782A21B4610CBBE0D790C /* libPods-Contact Picker.a */; };
+		9CF2762FD86000885745F8F4 /* libPods-Contact PickerUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD0F276444786B6E31BB7CC8 /* libPods-Contact PickerUITests.a */; };
 		A16235F324206C8F006E36C8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A16235F224206C8F006E36C8 /* AppDelegate.m */; };
 		A16235F624206C8F006E36C8 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A16235F524206C8F006E36C8 /* SceneDelegate.m */; };
 		A16235F924206C8F006E36C8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A16235F824206C8F006E36C8 /* ViewController.m */; };
@@ -23,6 +26,7 @@
 		A16236472420B4EA006E36C8 /* ContactTableViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A16236462420B4EA006E36C8 /* ContactTableViewPresenter.m */; };
 		A162364B2420B71D006E36C8 /* ContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A162364A2420B71D006E36C8 /* ContactTableCell.m */; };
 		A162364E2420BBA2006E36C8 /* ContactTableCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A162364D2420BBA2006E36C8 /* ContactTableCellViewModel.m */; };
+		A191E2572421E062002824F7 /* ImageCacheService.m in Sources */ = {isa = PBXBuildFile; fileRef = A191E2562421E062002824F7 /* ImageCacheService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +47,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		190F952E8F47177D923F922D /* Pods-Contact PickerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contact PickerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Contact PickerTests/Pods-Contact PickerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		31DDB894414B133861ED0E2E /* Pods-Contact PickerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contact PickerUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Contact PickerUITests/Pods-Contact PickerUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		41B4252D8508D33D272ABD00 /* libPods-Contact PickerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Contact PickerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C4782A21B4610CBBE0D790C /* libPods-Contact Picker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Contact Picker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E474F7F9B38AE5760F37C1E /* Pods-Contact PickerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contact PickerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Contact PickerTests/Pods-Contact PickerTests.release.xcconfig"; sourceTree = "<group>"; };
 		A16235EE24206C8F006E36C8 /* Contact Picker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Contact Picker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A16235F124206C8F006E36C8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A16235F224206C8F006E36C8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -80,6 +89,12 @@
 		A162364C2420BB0E006E36C8 /* ContactTableCellViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTableCellViewModel.h; sourceTree = "<group>"; };
 		A162364D2420BBA2006E36C8 /* ContactTableCellViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTableCellViewModel.m; sourceTree = "<group>"; };
 		A162364F2420BC14006E36C8 /* ZAViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZAViewModel.h; sourceTree = "<group>"; };
+		A191E2552421D874002824F7 /* ImageCacheService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCacheService.h; sourceTree = "<group>"; };
+		A191E2562421E062002824F7 /* ImageCacheService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageCacheService.m; sourceTree = "<group>"; };
+		AD0F276444786B6E31BB7CC8 /* libPods-Contact PickerUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Contact PickerUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B35C12BAAA7A93EC9CFBB693 /* Pods-Contact Picker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contact Picker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Contact Picker/Pods-Contact Picker.debug.xcconfig"; sourceTree = "<group>"; };
+		BCDC255ACBC90E8F5E7068CC /* Pods-Contact Picker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contact Picker.release.xcconfig"; path = "Pods/Target Support Files/Pods-Contact Picker/Pods-Contact Picker.release.xcconfig"; sourceTree = "<group>"; };
+		D3F088A6AE7A17CDEAB1614E /* Pods-Contact PickerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contact PickerUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Contact PickerUITests/Pods-Contact PickerUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8026FB58957DC05C4C2EAC74 /* libPods-Contact Picker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F5887B9FCC203AA6F78D720 /* libPods-Contact PickerTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,12 +118,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CF2762FD86000885745F8F4 /* libPods-Contact PickerUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3D72948C1B6429731C17AB68 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B35C12BAAA7A93EC9CFBB693 /* Pods-Contact Picker.debug.xcconfig */,
+				BCDC255ACBC90E8F5E7068CC /* Pods-Contact Picker.release.xcconfig */,
+				190F952E8F47177D923F922D /* Pods-Contact PickerTests.debug.xcconfig */,
+				9E474F7F9B38AE5760F37C1E /* Pods-Contact PickerTests.release.xcconfig */,
+				31DDB894414B133861ED0E2E /* Pods-Contact PickerUITests.debug.xcconfig */,
+				D3F088A6AE7A17CDEAB1614E /* Pods-Contact PickerUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		A16235E524206C8F006E36C8 = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +145,8 @@
 				A162360C24206C91006E36C8 /* Contact PickerTests */,
 				A162361724206C91006E36C8 /* Contact PickerUITests */,
 				A16235EF24206C8F006E36C8 /* Products */,
+				3D72948C1B6429731C17AB68 /* Pods */,
+				C78F929CDF92B16074D6B572 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -229,6 +262,8 @@
 			children = (
 				A162363024207A63006E36C8 /* ContactService.h */,
 				A162363124207AE9006E36C8 /* ContactService.m */,
+				A191E2552421D874002824F7 /* ImageCacheService.h */,
+				A191E2562421E062002824F7 /* ImageCacheService.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -270,6 +305,16 @@
 			path = ContactTableCell;
 			sourceTree = "<group>";
 		};
+		C78F929CDF92B16074D6B572 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4C4782A21B4610CBBE0D790C /* libPods-Contact Picker.a */,
+				41B4252D8508D33D272ABD00 /* libPods-Contact PickerTests.a */,
+				AD0F276444786B6E31BB7CC8 /* libPods-Contact PickerUITests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -277,9 +322,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A162361D24206C91006E36C8 /* Build configuration list for PBXNativeTarget "Contact Picker" */;
 			buildPhases = (
+				4461ECD1CB79513567C21707 /* [CP] Check Pods Manifest.lock */,
 				A16235EA24206C8F006E36C8 /* Sources */,
 				A16235EB24206C8F006E36C8 /* Frameworks */,
 				A16235EC24206C8F006E36C8 /* Resources */,
+				594D333D004904B2B0A4341C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -294,6 +341,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A162362024206C91006E36C8 /* Build configuration list for PBXNativeTarget "Contact PickerTests" */;
 			buildPhases = (
+				5B1EC494961B11C606C4C413 /* [CP] Check Pods Manifest.lock */,
 				A162360524206C91006E36C8 /* Sources */,
 				A162360624206C91006E36C8 /* Frameworks */,
 				A162360724206C91006E36C8 /* Resources */,
@@ -312,6 +360,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A162362324206C91006E36C8 /* Build configuration list for PBXNativeTarget "Contact PickerUITests" */;
 			buildPhases = (
+				2487CA8CC7DB0C3C1EED6DB3 /* [CP] Check Pods Manifest.lock */,
 				A162361024206C91006E36C8 /* Sources */,
 				A162361124206C91006E36C8 /* Frameworks */,
 				A162361224206C91006E36C8 /* Resources */,
@@ -395,6 +444,81 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2487CA8CC7DB0C3C1EED6DB3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Contact PickerUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4461ECD1CB79513567C21707 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Contact Picker-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		594D333D004904B2B0A4341C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Contact Picker/Pods-Contact Picker-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Nimbus/WebController.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WebController.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Contact Picker/Pods-Contact Picker-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5B1EC494961B11C606C4C413 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Contact PickerTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A16235EA24206C8F006E36C8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -402,6 +526,7 @@
 			files = (
 				A162363224207AE9006E36C8 /* ContactService.m in Sources */,
 				A16236422420B184006E36C8 /* ContactTableViewController.m in Sources */,
+				A191E2572421E062002824F7 /* ImageCacheService.m in Sources */,
 				A162364E2420BBA2006E36C8 /* ContactTableCellViewModel.m in Sources */,
 				A16235F924206C8F006E36C8 /* ViewController.m in Sources */,
 				A16235F324206C8F006E36C8 /* AppDelegate.m in Sources */,
@@ -577,6 +702,7 @@
 		};
 		A162361E24206C91006E36C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B35C12BAAA7A93EC9CFBB693 /* Pods-Contact Picker.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -594,6 +720,7 @@
 		};
 		A162361F24206C91006E36C8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BCDC255ACBC90E8F5E7068CC /* Pods-Contact Picker.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -611,6 +738,7 @@
 		};
 		A162362124206C91006E36C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 190F952E8F47177D923F922D /* Pods-Contact PickerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -631,6 +759,7 @@
 		};
 		A162362224206C91006E36C8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9E474F7F9B38AE5760F37C1E /* Pods-Contact PickerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -651,6 +780,7 @@
 		};
 		A162362424206C91006E36C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 31DDB894414B133861ED0E2E /* Pods-Contact PickerUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZZTDCDTRL8;
@@ -669,6 +799,7 @@
 		};
 		A162362524206C91006E36C8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D3F088A6AE7A17CDEAB1614E /* Pods-Contact PickerUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZZTDCDTRL8;

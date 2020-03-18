@@ -12,12 +12,20 @@
 #import "ZASingleton.h"
 #import "ZAContact.h"
 
-typedef void (^CompletionHandler)(NSDictionary<NSString *, NSArray<ZAContact *> *> *contacts, NSError *err);
+NS_ASSUME_NONNULL_BEGIN
+
+/// A callback called when the underlying \c DataAdapter class has finished execution
+typedef __weak void (^CompletionHandler)(NSDictionary<NSString *, NSArray<ZAContact *> *> * _Nullable contacts, NSError * _Nullable err);
 
 @interface ContactService : NSObject <ZASingleton>
 
 - (void)fetchContactsWithCompletion:(CompletionHandler)completion;
+- (void)createContact:(ZAContact *)contact withCompletion:(CompletionHandler)completion;
+- (void)editContact:(ZAContact *)contact withCompletion:(CompletionHandler)completion;
+- (void)deleteContact:(ZAContact *)contact withCompletion:(CompletionHandler)completion;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif /* ContactService_h */

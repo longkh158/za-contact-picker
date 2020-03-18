@@ -13,13 +13,30 @@
 #import "DataAdapter.h"
 #import "ZAContact.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
+typedef enum ContactDataAuthorizationStatus : NSInteger
+{
+    ContactDataAuthorizationStatusNotDetermined = 0,
+    ContactDataAuthorizationStatusRestricted,
+    ContactDataAuthorizationStatusDenied,
+    ContactDataAuthorizationStatusAuthorized,
+}
+ContactDataAuthorizationStatus;
+
+typedef void (^RequestAccessCompletionHandler)(BOOL granted, NSError * _Nullable error);
+
 @interface ContactDataAdapter : NSObject <ZASingleton, DataAdapter>
 
 @property NSArray *keysToFetch;
 @property (readonly) NSDictionary<NSString *, NSArray<ZAContact *> *> *contacts;
 
 - (instancetype)init;
+- (void)requestContactDataAccessWithCompetionHandler:(RequestAccessCompletionHandler)completionHandler;
++ (ContactDataAuthorizationStatus)contactDataAuthorizationStatus;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif /* ContactDataAdapter_h */

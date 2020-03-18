@@ -13,8 +13,9 @@
 
 @interface ContactTableViewPresenter : NSObject
 
-@property (readonly) id <ContactTableViewPresenterProtocol> delegate;
+@property (readonly, nonatomic, weak) id <ContactTableViewPresenterProtocol> delegate;
 
+- (instancetype)init;
 - (void)attachView:(id <ContactTableViewPresenterProtocol>)view;
 - (void)getAllContacts;
 

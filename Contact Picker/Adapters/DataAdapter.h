@@ -10,11 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^FetchDataCallback)(NSError  *_Nullable err);
+typedef void (^FetchDataCallback)(NSDictionary<NSString *, NSArray *> * _Nullable data, NSError  * _Nullable err);
 
 @protocol DataAdapter <NSObject>
 
-- (void)fetchDataWithCallback:(FetchDataCallback)callback;
+
+/*!
+ Fetch contacts data, optionally using a custom-defined queue.
+ \param queue - The queue to execute the fetching task in. Specify \c nil to using a global queue.
+ */
+- (void)fetchDataUsingQueue:(dispatch_queue_t _Nullable)queue withCallback:(FetchDataCallback)callback;
 
 @end
 

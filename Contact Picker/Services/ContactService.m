@@ -16,19 +16,71 @@
 
 @implementation ContactService
 
-- (void)fetchContactsWithCompletion:(CompletionHandler)completion
+- (void)fetchContactsWithCompletion:(CompletionHandler _Nonnull)completion
 {
-    [[ContactDataAdapter sharedInstance] fetchDataWithCallback:^(NSError *error)
+    NSAssert(completion != nil, @"nil given to completion handler");
+    // presenter will pop the block out of the stack when it returns, so we must keep a strong pointer
+    __strong __block CompletionHandler _completion = completion;
+    if (completion)
     {
-        if (error)
+        switch ([ContactDataAdapter contactDataAuthorizationStatus])
         {
-            completion(nil, error);
+            case ContactDataAuthorizationStatusRestricted:
+            case ContactDataAuthorizationStatusDenied:
+            {
+                NSDictionary *details = @{
+                    NSLocalizedFailureReasonErrorKey: @"No permission to access contacts data",
+                };
+                NSError *error = [[NSError alloc] initWithDomain:NSStringFromClass([self class])
+                                                            code:403
+                                                        userInfo:details];
+                completion(nil, error);
+                break;
+            }
+            case ContactDataAuthorizationStatusAuthorized:
+                [[ContactDataAdapter sharedInstance] fetchDataUsingQueue:nil
+                                                            withCallback:^(NSDictionary *contacts, NSError *error)
+                {
+                    if (error)
+                    {
+                        _completion(nil, error);
+                    }
+                    else
+                    {
+                        _completion(contacts, nil);
+                    }
+                }];
+                break;
+            case ContactDataAuthorizationStatusNotDetermined:
+                [[ContactDataAdapter sharedInstance] requestContactDataAccessWithCompetionHandler:^(BOOL granted, NSError * _Nullable error)
+                {
+                    if (!granted)
+                    {
+                        completion(nil, error);
+                    }
+                    else
+                    {
+                        [self fetchContactsWithCompletion:completion];
+                    }
+                }];
+                break;
         }
-        else
-        {
-            completion([ContactDataAdapter sharedInstance].contacts, nil);
-        }
-    }];
+    }
+}
+
+- (void)createContact:(ZAContact *)contact withCompletion:(CompletionHandler)completion
+{
+    
+}
+
+- (void)editContact:(ZAContact *)contact withCompletion:(CompletionHandler)completion
+{
+    
+}
+
+- (void)deleteContact:(ZAContact *)contact withCompletion:(CompletionHandler)completion
+{
+    
 }
 
 + (instancetype)sharedInstance

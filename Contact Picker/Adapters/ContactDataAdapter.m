@@ -10,10 +10,11 @@
 #import <Contacts/Contacts.h>
 #import "ContactDataAdapter.h"
 #import "ZAContact.h"
+#import "AppConstants.h"
 
 @interface ContactDataAdapter ()
 
-@property dispatch_queue_t queue;
+@property dispatch_semaphore_t semaphore;
 @property CNContactStore *store;
 @property (readonly, nonatomic) NSArray *allowedKeys;
 @property NSDictionary<NSString *, NSArray<ZAContact *> *> *contacts;
@@ -29,7 +30,7 @@
     self = [super init];
     if (self)
     {
-        _queue = dispatch_queue_create("contact_data_adapter_queue", DISPATCH_QUEUE_CONCURRENT);
+        _semaphore = dispatch_semaphore_create(MAXIMUM_CALLBACKS_ALLOWED);
         _store = [[CNContactStore alloc] init];
         _allowedKeys = @[
             CNContactIdentifierKey,
@@ -59,39 +60,54 @@
 
 #pragma mark - DataAdapter Protocol
 
-- (void)fetchDataWithCallback:(FetchDataCallback)callback
+- (void)fetchDataUsingQueue:(dispatch_queue_t _Nullable)queue withCallback:(FetchDataCallback _Nonnull)callback
 {
+    NSAssert(callback != nil, @"expect a non-null callback");
     NSMutableArray<CNContact *> __block *contacts = [[NSMutableArray alloc] init];
     CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:[self filteredKeysToFetch]];
     NSError __block *fetchError;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+    if (callback)
     {
-        [self.store enumerateContactsWithFetchRequest:request error:&fetchError usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop)
+        dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
+        if (self.contacts)
         {
-            NSAssert(fetchError == nil, @"fetch contacts error: %@", fetchError);
-            if (fetchError)
-            {
-                *stop = YES;
-            }
-            else
-            {
-                [contacts addObject:contact];
-            }
-        }];
-        if (!fetchError)
-        {
-            [self saveToContacts:contacts];
-            callback(nil);
+            callback(self.contacts, nil);
         }
         else
         {
-            NSDictionary *details = @{
-                NSLocalizedFailureReasonErrorKey: @"fetch contacts error",
-            };
-            NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:500 userInfo:details];
-            callback(error);
+            dispatch_queue_t queueToExecute = queue ? queue : dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+            dispatch_async(queueToExecute, ^
+            {
+                [self.store enumerateContactsWithFetchRequest:request error:&fetchError usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop)
+                {
+                    NSAssert(fetchError == nil, @"fetch contacts error: %@", fetchError);
+                    if (fetchError)
+                    {
+                        *stop = YES;
+                    }
+                    else
+                    {
+                        [contacts addObject:contact];
+                    }
+                }];
+                if (!fetchError)
+                {
+                    [self saveToContacts:contacts];
+                    dispatch_semaphore_signal(self.semaphore);
+                    callback(self.contacts, nil);
+                }
+                else
+                {
+                    NSDictionary *details = @{
+                        NSLocalizedFailureReasonErrorKey: @"fetch contacts error",
+                    };
+                    NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:500 userInfo:details];
+                    dispatch_semaphore_signal(self.semaphore);
+                    callback(nil, error);
+                }
+            });
         }
-    });
+    }
 }
 
 - (void)saveToContacts:(NSArray<CNContact *> *)contacts
@@ -99,15 +115,22 @@
     self.contacts = [self sortedContactsDict:contacts];
 }
 
+- (void)requestContactDataAccessWithCompetionHandler:(RequestAccessCompletionHandler)completionHandler
+{
+    [self.store requestAccessForEntityType:CNEntityTypeContacts completionHandler:completionHandler];
+}
+
 - (NSDictionary *)sortedContactsDict:(NSArray<CNContact *> *)contacts
 {
-    NSArray *sortedContacts = [contacts sortedArrayUsingComparator:[CNContact comparatorForNameSortOrder:CNContactSortOrderUserDefault]];
-    NSMutableDictionary<NSString *, NSMutableArray *> __block *result = [NSMutableDictionary dictionary];
+    NSComparator contactSortOrder = [CNContact comparatorForNameSortOrder:CNContactSortOrderUserDefault];
+    NSArray *sortedContacts = [contacts sortedArrayUsingComparator:contactSortOrder];
     NSCharacterSet __block *charSet = [NSCharacterSet letterCharacterSet];
+    NSMutableDictionary<NSString *, NSMutableArray *> __block *result = [NSMutableDictionary dictionary];
     [sortedContacts enumerateObjectsUsingBlock:^(CNContact *_Nonnull cnContact, NSUInteger idx, BOOL * _Nonnull stop) {
         NSString *key = [[NSString alloc] init];
-        unichar firstLetter = [[CNContactFormatter stringFromContact:cnContact
-                                         style:CNContactFormatterStyleFullName] characterAtIndex:0];
+        NSString *fullName = [CNContactFormatter stringFromContact:cnContact
+                                                             style:CNContactFormatterStyleFullName];
+        unichar firstLetter = [fullName characterAtIndex:0];
         if ([charSet characterIsMember:firstLetter])
         {
             key = [[[NSString alloc] initWithCharacters:&firstLetter length:1] uppercaseString];
@@ -124,6 +147,21 @@
         [result[key] addObject:contact];
     }];
     return result;
+}
+
++ (ContactDataAuthorizationStatus)contactDataAuthorizationStatus
+{
+    switch ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts])
+    {
+        case CNAuthorizationStatusDenied:
+            return ContactDataAuthorizationStatusDenied;
+        case CNAuthorizationStatusRestricted:
+            return ContactDataAuthorizationStatusRestricted;
+        case CNAuthorizationStatusAuthorized:
+            return ContactDataAuthorizationStatusAuthorized;
+        case CNAuthorizationStatusNotDetermined:
+            return ContactDataAuthorizationStatusNotDetermined;
+    }
 }
 
 + (instancetype)sharedInstance

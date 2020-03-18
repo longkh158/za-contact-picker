@@ -14,13 +14,24 @@
 
 @interface ContactTableViewPresenter ()
 
-@property id <ContactTableViewPresenterProtocol> delegate;
+@property (nonatomic, weak) id <ContactTableViewPresenterProtocol> delegate;
+@property (nonnull) ContactService *service;
 
 - (NSDictionary *)mapToViewModels:(NSDictionary<NSString *,NSArray<ZAContact *> *> *)contacts;
 
 @end
 
 @implementation ContactTableViewPresenter
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        _service = [[ContactService alloc] init];
+    }
+    return self;
+}
 
 - (void)attachView:(id<ContactTableViewPresenterProtocol>)view
 {
@@ -35,35 +46,41 @@
         {
             [self.delegate willFetchData];
         }
-        [[ContactService sharedInstance] fetchContactsWithCompletion:^(NSDictionary<NSString *,NSArray<ZAContact *> *> *contacts, NSError *err)
+        [self.service fetchContactsWithCompletion:^(NSDictionary<NSString *,NSArray<ZAContact *> *> * _Nullable contacts, NSError * _Nullable err)
         {
             if (err)
             {
                 [self.delegate didFetchData:nil withError:err];
             }
-            else if ([contacts count] == 0)
+            else if (contacts)
             {
-                if ([self.delegate respondsToSelector:@selector(didFetchEmpty)])
+                if ([contacts count] == 0)
                 {
-                    [self.delegate didFetchEmpty];
-                }
-            }
-            else
-            {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-                {
-                    NSDictionary *vms = [self mapToViewModels:contacts];
-                    dispatch_async(dispatch_get_main_queue(), ^
+                    if ([self.delegate respondsToSelector:@selector(didFetchEmpty)])
                     {
-                        [self.delegate didFetchData:vms withError:nil];
+                        dispatch_async(dispatch_get_main_queue(), ^
+                        {
+                            [self.delegate didFetchEmpty];
+                        });
+                    }
+                }
+                else
+                {
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+                    {
+                        NSDictionary *vms = [self mapToViewModels:contacts];
+                        dispatch_async(dispatch_get_main_queue(), ^
+                        {
+                            [self.delegate didFetchData:vms withError:nil];
+                        });
                     });
-                });
+                }
             }
         }];
     }
 }
 
-- (NSDictionary *)mapToViewModels:(NSDictionary<NSString *,NSArray<ZAContact *> *> *)contacts
+- (NSDictionary *)mapToViewModels:(NSDictionary<NSString *,NSArray<ZAContact *> *> * _Nonnull)contacts
 {
     NSMutableDictionary *result = [NSMutableDictionary dictionary];
     [contacts enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSArray<ZAContact *> * _Nonnull contactsWithKey, BOOL * _Nonnull stop)

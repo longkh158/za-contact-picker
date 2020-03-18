@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol ZAViewModel <NSObject>
 
-+ (instancetype)fromModel:(id)model;
++ (instancetype)fromModel:(id _Nonnull)model;
 
 @end
 
