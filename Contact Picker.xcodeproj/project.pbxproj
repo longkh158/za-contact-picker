@@ -10,6 +10,7 @@
 		2F5887B9FCC203AA6F78D720 /* libPods-Contact PickerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4252D8508D33D272ABD00 /* libPods-Contact PickerTests.a */; };
 		8026FB58957DC05C4C2EAC74 /* libPods-Contact Picker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C4782A21B4610CBBE0D790C /* libPods-Contact Picker.a */; };
 		9CF2762FD86000885745F8F4 /* libPods-Contact PickerUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD0F276444786B6E31BB7CC8 /* libPods-Contact PickerUITests.a */; };
+		A156F7CC242312DC00AD030E /* NSDictionary+SortedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A156F7CB242312DC00AD030E /* NSDictionary+SortedDictionary.m */; };
 		A16235F324206C8F006E36C8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A16235F224206C8F006E36C8 /* AppDelegate.m */; };
 		A16235F624206C8F006E36C8 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A16235F524206C8F006E36C8 /* SceneDelegate.m */; };
 		A16235F924206C8F006E36C8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A16235F824206C8F006E36C8 /* ViewController.m */; };
@@ -52,6 +53,8 @@
 		41B4252D8508D33D272ABD00 /* libPods-Contact PickerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Contact PickerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4782A21B4610CBBE0D790C /* libPods-Contact Picker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Contact Picker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E474F7F9B38AE5760F37C1E /* Pods-Contact PickerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contact PickerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Contact PickerTests/Pods-Contact PickerTests.release.xcconfig"; sourceTree = "<group>"; };
+		A156F7CA242312DC00AD030E /* NSDictionary+SortedDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+SortedDictionary.h"; sourceTree = "<group>"; };
+		A156F7CB242312DC00AD030E /* NSDictionary+SortedDictionary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+SortedDictionary.m"; sourceTree = "<group>"; };
 		A16235EE24206C8F006E36C8 /* Contact Picker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Contact Picker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A16235F124206C8F006E36C8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A16235F224206C8F006E36C8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -272,6 +275,8 @@
 			isa = PBXGroup;
 			children = (
 				A162363524207D0C006E36C8 /* ZASingleton.h */,
+				A156F7CA242312DC00AD030E /* NSDictionary+SortedDictionary.h */,
+				A156F7CB242312DC00AD030E /* NSDictionary+SortedDictionary.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -524,6 +529,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A156F7CC242312DC00AD030E /* NSDictionary+SortedDictionary.m in Sources */,
 				A162363224207AE9006E36C8 /* ContactService.m in Sources */,
 				A16236422420B184006E36C8 /* ContactTableViewController.m in Sources */,
 				A191E2572421E062002824F7 /* ImageCacheService.m in Sources */,

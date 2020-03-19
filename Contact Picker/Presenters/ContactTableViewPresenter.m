@@ -11,6 +11,7 @@
 #import "ContactService.h"
 #import "ContactTableCellViewModel.h"
 #import "ZAContact.h"
+#import "NSDictionary+SortedDictionary.h"
 
 @interface ContactTableViewPresenter ()
 
@@ -18,6 +19,7 @@
 @property (nonnull) ContactService *service;
 
 - (NSDictionary *)mapToViewModels:(NSDictionary<NSString *,NSArray<ZAContact *> *> *)contacts;
+- (NSArray *)mapToVMSectionedArray:(NSDictionary<NSString *,NSArray<ZAContact *> *> *)contacts;
 
 @end
 
@@ -68,10 +70,11 @@
                 {
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
                     {
-                        NSDictionary *vms = [self mapToViewModels:contacts];
+                        NSDictionary *viewModels = [self mapToViewModels:contacts];
+                        NSArray *vms = [self mapToVMSectionedArray:contacts];
                         dispatch_async(dispatch_get_main_queue(), ^
                         {
-                            [self.delegate didFetchData:vms withError:nil];
+                            [self.delegate didFetchData:viewModels withError:nil];
                         });
                     });
                 }
@@ -80,7 +83,7 @@
     }
 }
 
-- (NSDictionary *)mapToViewModels:(NSDictionary<NSString *,NSArray<ZAContact *> *> * _Nonnull)contacts
+- (NSDictionary * _Nonnull)mapToViewModels:(NSDictionary<NSString *,NSArray<ZAContact *> *> * _Nonnull)contacts
 {
     NSMutableDictionary *result = [NSMutableDictionary dictionary];
     [contacts enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSArray<ZAContact *> * _Nonnull contactsWithKey, BOOL * _Nonnull stop)
@@ -93,6 +96,23 @@
         {
             ContactTableCellViewModel *vm = [ContactTableCellViewModel fromModel:contact];
             [result[key] addObject:vm];
+        }];
+    }];
+    return result;
+}
+
+- (NSArray * _Nonnull)mapToVMSectionedArray:(NSDictionary<NSString *,NSArray<ZAContact *> *> * _Nonnull)contacts
+{
+    NSMutableArray *result = [NSMutableArray array];
+    NSArray<NSString *> *sortedKeys = [contacts sortedKeys];
+    [sortedKeys enumerateObjectsUsingBlock:^(NSString * _Nonnull key, NSUInteger idx, BOOL * _Nonnull stop)
+    {
+        [result addObject:key];
+        NSArray<ZAContact *> *contactsWithKey = contacts[key];
+        [contactsWithKey enumerateObjectsUsingBlock:^(ZAContact * _Nonnull contact, NSUInteger idx, BOOL * _Nonnull stop)
+        {
+            ContactTableCellViewModel *vm = [ContactTableCellViewModel fromModel:contact];
+            [result addObject:vm];
         }];
     }];
     return result;

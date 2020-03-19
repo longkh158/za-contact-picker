@@ -26,6 +26,7 @@
         switch ([ContactDataAdapter contactDataAuthorizationStatus])
         {
             case ContactDataAuthorizationStatusRestricted:
+                // fallthrough
             case ContactDataAuthorizationStatusDenied:
             {
                 NSDictionary *details = @{
