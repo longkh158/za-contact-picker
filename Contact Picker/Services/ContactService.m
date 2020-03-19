@@ -39,8 +39,9 @@
                 break;
             }
             case ContactDataAuthorizationStatusAuthorized:
-                [[ContactDataAdapter sharedInstance] fetchDataUsingQueue:nil
-                                                            withCallback:^(NSDictionary *contacts, NSError *error)
+                [[ContactDataAdapter sharedInstance] fetchContactsWithKeys:nil
+                                                                usingQueue:nil
+                                                                  callback:^(NSDictionary *contacts, NSError *error)
                 {
                     if (error)
                     {
@@ -66,6 +67,25 @@
                 }];
                 break;
         }
+    }
+}
+
+- (void)filteredContactsWithText:(NSString *)text completionHandler:(CompletionHandler)completion
+{
+    NSAssert(completion != nil, @"nil given to completion handler");
+    if (completion)
+    {
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(ZAContact * _Nullable contact, NSDictionary<NSString *,id> * _Nullable bindings)
+        {
+            return [[contact.fullName lowercaseString] containsString:text];
+        }];
+        __strong __block CompletionHandler _completion = completion;
+        [[ContactDataAdapter sharedInstance] filteredContactsWithPredicate:predicate
+                                                                usingQueue:nil
+                                                                  callback:^(NSDictionary<NSString *,NSArray *> * _Nullable filteredContacts, NSError * _Nullable err)
+        {
+            _completion(filteredContacts, nil);
+        }];
     }
 }
 

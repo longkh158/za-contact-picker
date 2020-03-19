@@ -70,11 +70,10 @@
                 {
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
                     {
-                        NSDictionary *viewModels = [self mapToViewModels:contacts];
                         NSArray *vms = [self mapToVMSectionedArray:contacts];
                         dispatch_async(dispatch_get_main_queue(), ^
                         {
-                            [self.delegate didFetchData:viewModels withError:nil];
+                            [self.delegate didFetchData:vms withError:nil];
                         });
                     });
                 }
@@ -83,22 +82,9 @@
     }
 }
 
-- (NSDictionary * _Nonnull)mapToViewModels:(NSDictionary<NSString *,NSArray<ZAContact *> *> * _Nonnull)contacts
+- (void)filteredContactsByText:(NSString *)text
 {
-    NSMutableDictionary *result = [NSMutableDictionary dictionary];
-    [contacts enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSArray<ZAContact *> * _Nonnull contactsWithKey, BOOL * _Nonnull stop)
-    {
-        if (!result[key])
-        {
-            result[key] = [NSMutableArray arrayWithCapacity:[contactsWithKey count]];
-        }
-        [contactsWithKey enumerateObjectsUsingBlock:^(ZAContact * _Nonnull contact, NSUInteger idx, BOOL * _Nonnull stop)
-        {
-            ContactTableCellViewModel *vm = [ContactTableCellViewModel fromModel:contact];
-            [result[key] addObject:vm];
-        }];
-    }];
-    return result;
+    
 }
 
 - (NSArray * _Nonnull)mapToVMSectionedArray:(NSDictionary<NSString *,NSArray<ZAContact *> *> * _Nonnull)contacts

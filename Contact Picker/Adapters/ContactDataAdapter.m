@@ -12,14 +12,17 @@
 #import "ZAContact.h"
 #import "AppConstants.h"
 
-@interface ContactDataAdapter ()
+@interface ContactDataAdapter () <DataAdapter>
 
 @property dispatch_semaphore_t semaphore;
 @property CNContactStore *store;
+@property NSArray *keysToFetch;
 @property (readonly, nonatomic) NSArray *allowedKeys;
+@property NSDictionary<ContactDataKey, id <CNKeyDescriptor>> *keyMapping;
 @property NSDictionary<NSString *, NSArray<ZAContact *> *> *contacts;
 
 - (NSDictionary *)sortedContactsDict:(NSArray<CNContact *> *)contacts;
+- (NSArray *)filteredKeysToFetch:(NSArray *)keysToFetch;
 
 @end
 
@@ -45,10 +48,10 @@
     return self;
 }
 
-- (NSArray *)filteredKeysToFetch
+- (NSArray *)filteredKeysToFetch:(NSArray *)keysToFetch;
 {
-    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:[self.keysToFetch count]];
-    [self.keysToFetch enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop)
+    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:[keysToFetch count]];
+    [keysToFetch enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop)
     {
         if ([self.allowedKeys containsObject:key])
         {
@@ -58,13 +61,32 @@
     return result;
 }
 
+/*!
+ Fetch contacts, optionally with a specified set of keys, and a queue to execute the task on.
+ \param keysToFetch a set of keys to fetch. Specify \c nil to get all keys.
+ \param queue a custom queue to execute the task on.
+ \param callback a \c FetchDataCallback block called when finished fetching contacts.
+ */
+- (void)fetchContactsWithKeys:(NSArray * _Nullable)keysToFetch
+                   usingQueue:(dispatch_queue_t _Nullable)queue
+                     callback:(FetchDataCallback _Nonnull)callback
+{
+    NSArray *keys = [NSArray arrayWithArray:self.allowedKeys];
+    if (keysToFetch)
+    {
+        keys = [self filteredKeysToFetch:keysToFetch];
+    }
+    self.keysToFetch = keys;
+    [self fetchDataUsingQueue:queue withCallback:callback];
+}
+
 #pragma mark - DataAdapter Protocol
 
 - (void)fetchDataUsingQueue:(dispatch_queue_t _Nullable)queue withCallback:(FetchDataCallback _Nonnull)callback
 {
     NSAssert(callback != nil, @"expect a non-null callback");
     NSMutableArray<CNContact *> __block *contacts = [[NSMutableArray alloc] init];
-    CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:[self filteredKeysToFetch]];
+    CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:self.keysToFetch];
     NSError __block *fetchError;
     if (callback)
     {
@@ -108,6 +130,27 @@
             });
         }
     }
+}
+
+- (void)filteredContactsWithPredicate:(NSPredicate *)predicate
+                           usingQueue:(dispatch_queue_t)queue
+                             callback:(FetchDataCallback)callback
+{
+    if (!self.contacts)
+    {
+        [self fetchDataUsingQueue:queue
+                     withCallback:callback];
+    }
+    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:[self.contacts count]];
+    [self.contacts enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSArray<ZAContact *> * _Nonnull contactsWithKey, BOOL * _Nonnull stop)
+    {
+        NSArray *filteredContactsWithKey = [contactsWithKey filteredArrayUsingPredicate:predicate];
+        if ([filteredContactsWithKey count] > 0)
+        {
+            [result setObject:filteredContactsWithKey forKey:key];
+        }
+    }];
+    callback(result, nil);
 }
 
 - (void)saveToContacts:(NSArray<CNContact *> *)contacts

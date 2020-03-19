@@ -9,92 +9,82 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <Nimbus/NITableViewModel.h>
-#import "AppConstants.h"
 #import "ContactTableViewController.h"
 #import "ContactTableViewPresenter.h"
-#import "ContactTableViewPresenterProtocol.h"
 #import "ContactTableCell.h"
-#import "ContactTableCellViewModel.h"
+#import "AppConstants.h"
 
-@interface ContactTableViewController () <UITableViewDelegate, UITableViewDataSource, ContactTableViewPresenterProtocol, NITableViewModelDelegate>
+@interface ContactTableViewController () <UITableViewDelegate, NITableViewModelDelegate, ContactTableViewPresenterProtocol>
 
 @property ContactTableViewPresenter *presenter;
-@property NITableViewModel *model;
-@property NSDictionary<NSString *, NSArray<ContactTableCellViewModel *> *> *dataSource;
+@property NITableViewModel *viewModel;
 @property NSArray<NSString *> *contactKeys;
-
-- (NSArray *)sortContactsKeys:(NSArray *)keys;
 
 @end
 
 @implementation ContactTableViewController
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.tableView.allowsMultipleSelection = YES;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setupView];
     [self.tableView registerClass:[ContactTableCell class] forCellReuseIdentifier:TABLE_CELL_REUSE_ID];
-//    self.tableView.dataSource = self.viewModel;
-    [self initialize];
     [self.presenter attachView:self];
     [self.presenter getAllContacts];
 }
 
 #pragma mark - Initializers
 
-- (void)initialize
+- (void)setupView
 {
-    self.contactKeys = [[NSArray alloc] init];
     self.presenter = [[ContactTableViewPresenter alloc] init];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.sectionIndexColor = [UIColor systemGrayColor];
 }
 
-#pragma mark - UITableViewDelegate
+- (void)setupViewModelWithSearch:(BOOL)showSearch
+                     withSummary:(BOOL)showSummary
+{
+    self.tableView.dataSource = self.viewModel;
+    [self.viewModel setSectionIndexType:NITableViewModelSectionIndexAlphabetical
+                            showsSearch:showSearch
+                           showsSummary:showSummary];
+    [self.tableView reloadData];
+}
+
+#pragma mark - UITableViewDelegate Protocol
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return TABLE_CELL_HEIGHT;
 }
 
-#pragma mark - UITableViewDataSource
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
-    return [self.contactKeys count];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    NSAssert(section < [self.contactKeys count], @"section number exceed total keys");
-    NSString *key = [self.contactKeys objectAtIndex:section];
-    NSArray *contactsWithKey = [self.dataSource objectForKey:key];
-    return [contactsWithKey count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    ContactTableCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TABLE_CELL_REUSE_ID
-                                                                  forIndexPath:indexPath];
-    NSAssert(indexPath.section < [self.contactKeys count], @"section number exceed total keys");
-    NSString *key = [self.contactKeys objectAtIndex:indexPath.section];
-    NSArray *section = [self.dataSource objectForKey:key];
-    NSAssert(section != nil, @"key expected to exist in data source. nil received");
-    [cell updateWithViewModel:[section objectAtIndex:indexPath.row]];
-    return cell;
+    view.contentView.backgroundColor = [UIColor whiteColor];
 }
 
 #pragma mark - Presenter Protocol
 
-- (void)didFetchData:(NSDictionary *)data withError:(NSError *)error
+- (void)didFetchData:(NSArray *)data
+           withError:(NSError *)error
 {
-    self.dataSource = data;
-    self.contactKeys = [self sortContactsKeys:[data allKeys]];
-    self.model = [[NITableViewModel alloc] initWithDelegate:self];
-    [self.tableView reloadData];
+    self.viewModel = [[NITableViewModel alloc] initWithSectionedArray:data delegate:self];
+    [self setupViewModelWithSearch:NO
+                       withSummary:NO];
 }
 
-- (NSArray *)sortContactsKeys:(NSArray *)keys
-{
-    return [keys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-}
+#pragma mark - NITableViewModelDelegate Protocol
 
 - (UITableViewCell *)tableViewModel:(NITableViewModel *)tableViewModel
                    cellForTableView:(UITableView *)tableView
@@ -103,11 +93,7 @@
 {
     ContactTableCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TABLE_CELL_REUSE_ID
                                                                   forIndexPath:indexPath];
-    NSAssert(indexPath.section < [self.contactKeys count], @"section number exceed total keys");
-    NSString *key = [self.contactKeys objectAtIndex:indexPath.section];
-    NSArray *section = [self.dataSource objectForKey:key];
-    NSAssert(section != nil, @"key expected to exist in data source. nil received");
-    [cell updateWithViewModel:[section objectAtIndex:indexPath.row]];
+    [cell updateWithViewModel:object];
     return cell;
 }
 

@@ -18,6 +18,7 @@
 - (instancetype)init;
 - (void)attachView:(id <ContactTableViewPresenterProtocol>)view;
 - (void)getAllContacts;
+- (void)filteredContactsByText:(NSString *)text;
 
 @end
 

@@ -11,6 +11,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ContactTableCellViewModel.h"
+#import "ColorConstants.h"
 
 @interface ContactTableCell : UITableViewCell
 

@@ -11,6 +11,9 @@
 		8026FB58957DC05C4C2EAC74 /* libPods-Contact Picker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C4782A21B4610CBBE0D790C /* libPods-Contact Picker.a */; };
 		9CF2762FD86000885745F8F4 /* libPods-Contact PickerUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD0F276444786B6E31BB7CC8 /* libPods-Contact PickerUITests.a */; };
 		A156F7CC242312DC00AD030E /* NSDictionary+SortedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A156F7CB242312DC00AD030E /* NSDictionary+SortedDictionary.m */; };
+		A156F7CF2423595B00AD030E /* ContactSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = A156F7CE2423595B00AD030E /* ContactSearchController.m */; };
+		A156F7D52423634900AD030E /* ColorConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = A156F7D42423634900AD030E /* ColorConstants.m */; };
+		A156F7D824237ACE00AD030E /* ContactSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = A156F7D724237ACE00AD030E /* ContactSearchResultController.m */; };
 		A16235F324206C8F006E36C8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A16235F224206C8F006E36C8 /* AppDelegate.m */; };
 		A16235F624206C8F006E36C8 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A16235F524206C8F006E36C8 /* SceneDelegate.m */; };
 		A16235F924206C8F006E36C8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A16235F824206C8F006E36C8 /* ViewController.m */; };
@@ -55,6 +58,12 @@
 		9E474F7F9B38AE5760F37C1E /* Pods-Contact PickerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contact PickerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Contact PickerTests/Pods-Contact PickerTests.release.xcconfig"; sourceTree = "<group>"; };
 		A156F7CA242312DC00AD030E /* NSDictionary+SortedDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+SortedDictionary.h"; sourceTree = "<group>"; };
 		A156F7CB242312DC00AD030E /* NSDictionary+SortedDictionary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+SortedDictionary.m"; sourceTree = "<group>"; };
+		A156F7CD242358D600AD030E /* ContactSearchController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactSearchController.h; sourceTree = "<group>"; };
+		A156F7CE2423595B00AD030E /* ContactSearchController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactSearchController.m; sourceTree = "<group>"; };
+		A156F7D124235F3800AD030E /* ColorConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorConstants.h; sourceTree = "<group>"; };
+		A156F7D42423634900AD030E /* ColorConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorConstants.m; sourceTree = "<group>"; };
+		A156F7D624237AA000AD030E /* ContactSearchResultController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactSearchResultController.h; sourceTree = "<group>"; };
+		A156F7D724237ACE00AD030E /* ContactSearchResultController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactSearchResultController.m; sourceTree = "<group>"; };
 		A16235EE24206C8F006E36C8 /* Contact Picker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Contact Picker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A16235F124206C8F006E36C8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A16235F224206C8F006E36C8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -141,6 +150,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		A156F7D024235F2300AD030E /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A156F7D124235F3800AD030E /* ColorConstants.h */,
+				A156F7D42423634900AD030E /* ColorConstants.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		A16235E524206C8F006E36C8 = {
 			isa = PBXGroup;
 			children = (
@@ -209,6 +227,7 @@
 		A162362624206CFB006E36C8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A156F7D024235F2300AD030E /* Utils */,
 				A162362D24207538006E36C8 /* Components */,
 				A162362724206D0C006E36C8 /* Screens */,
 			);
@@ -256,6 +275,10 @@
 			children = (
 				A16236402420B125006E36C8 /* ContactTableViewController.h */,
 				A16236412420B184006E36C8 /* ContactTableViewController.m */,
+				A156F7CD242358D600AD030E /* ContactSearchController.h */,
+				A156F7CE2423595B00AD030E /* ContactSearchController.m */,
+				A156F7D624237AA000AD030E /* ContactSearchResultController.h */,
+				A156F7D724237ACE00AD030E /* ContactSearchResultController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -530,6 +553,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A156F7CC242312DC00AD030E /* NSDictionary+SortedDictionary.m in Sources */,
+				A156F7D52423634900AD030E /* ColorConstants.m in Sources */,
 				A162363224207AE9006E36C8 /* ContactService.m in Sources */,
 				A16236422420B184006E36C8 /* ContactTableViewController.m in Sources */,
 				A191E2572421E062002824F7 /* ImageCacheService.m in Sources */,
@@ -539,9 +563,11 @@
 				A162363A2420810E006E36C8 /* ZAContact.m in Sources */,
 				A16236472420B4EA006E36C8 /* ContactTableViewPresenter.m in Sources */,
 				A162360424206C91006E36C8 /* main.m in Sources */,
+				A156F7CF2423595B00AD030E /* ContactSearchController.m in Sources */,
 				A162364B2420B71D006E36C8 /* ContactTableCell.m in Sources */,
 				A162363F242083EE006E36C8 /* ContactDataAdapter.m in Sources */,
 				A16235F624206C8F006E36C8 /* SceneDelegate.m in Sources */,
+				A156F7D824237ACE00AD030E /* ContactSearchResultController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,6 +20,7 @@ typedef __weak void (^CompletionHandler)(NSDictionary<NSString *, NSArray<ZACont
 @interface ContactService : NSObject <ZASingleton>
 
 - (void)fetchContactsWithCompletion:(CompletionHandler)completion;
+- (void)filteredContactsWithText:(NSString *)text completionHandler:(CompletionHandler)completion;
 - (void)createContact:(ZAContact *)contact withCompletion:(CompletionHandler)completion;
 - (void)editContact:(ZAContact *)contact withCompletion:(CompletionHandler)completion;
 - (void)deleteContact:(ZAContact *)contact withCompletion:(CompletionHandler)completion;

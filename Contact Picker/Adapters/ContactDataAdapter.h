@@ -24,15 +24,27 @@ typedef enum ContactDataAuthorizationStatus : NSInteger
 }
 ContactDataAuthorizationStatus;
 
+typedef NSString * ContactDataKey NS_TYPED_ENUM;
+static ContactDataKey const ContactDataKeyFirstName = @"ContactDataKeyFirstName";
+static ContactDataKey const ContactDataKeyLastName = @"ContactDataKeyLastName";
+static ContactDataKey const ContactDataKeyPhoneNumbers = @"ContactDataKeyPhoneNumbers";
+static ContactDataKey const ContactDataKeyFullName = @"ContactDataKeyFullName";
+
 typedef void (^RequestAccessCompletionHandler)(BOOL granted, NSError * _Nullable error);
 
-@interface ContactDataAdapter : NSObject <ZASingleton, DataAdapter>
+@interface ContactDataAdapter : NSObject <ZASingleton>
 
-@property NSArray *keysToFetch;
 @property (readonly) NSDictionary<NSString *, NSArray<ZAContact *> *> *contacts;
 
 - (instancetype)init;
 - (void)requestContactDataAccessWithCompetionHandler:(RequestAccessCompletionHandler)completionHandler;
+- (void)fetchContactsWithKeys:(NSArray<ContactDataKey> * _Nullable)keysToFetch
+                   usingQueue:(dispatch_queue_t _Nullable)queue
+                     callback:(FetchDataCallback)callback;
+- (void)filteredContactsWithPredicate:(NSPredicate *)predicate
+                           usingQueue:(dispatch_queue_t _Nullable)queue
+                             callback:(FetchDataCallback _Nullable)callback;
+
 + (ContactDataAuthorizationStatus)contactDataAuthorizationStatus;
 
 @end
