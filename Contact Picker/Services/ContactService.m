@@ -77,7 +77,11 @@
     {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(ZAContact * _Nullable contact, NSDictionary<NSString *,id> * _Nullable bindings)
         {
-            return [[contact.fullName lowercaseString] containsString:text];
+            if ([text length] == 0)
+            {
+                return YES;
+            }
+            return [[contact fullName] localizedCaseInsensitiveContainsString:text];
         }];
         __strong __block CompletionHandler _completion = completion;
         [[ContactDataAdapter sharedInstance] filteredContactsWithPredicate:predicate

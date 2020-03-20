@@ -9,6 +9,8 @@
 #ifndef ContactSearchResultController_h
 #define ContactSearchResultController_h
 
+#import "ContactTableViewController.h"
+
 @interface ContactSearchResultController : UITableViewController
 
 @end

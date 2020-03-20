@@ -145,21 +145,25 @@
                            usingQueue:(dispatch_queue_t)queue
                              callback:(FetchDataCallback)callback
 {
-    if (!self.contacts)
+    NSAssert(callback != nil, @"expect a non-null callback");
+    if (callback)
     {
-        [self fetchDataUsingQueue:queue
-                     withCallback:callback];
-    }
-    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:[self.contacts count]];
-    [self.contacts enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSArray<ZAContact *> * _Nonnull contactsWithKey, BOOL * _Nonnull stop)
-    {
-        NSArray *filteredContactsWithKey = [contactsWithKey filteredArrayUsingPredicate:predicate];
-        if ([filteredContactsWithKey count] > 0)
+        if (!self.contacts)
         {
-            [result setObject:filteredContactsWithKey forKey:key];
+            [self fetchDataUsingQueue:queue
+                         withCallback:callback];
         }
-    }];
-    callback(result, nil);
+        NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:[self.contacts count]];
+        [self.contacts enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSArray<ZAContact *> * _Nonnull contactsWithKey, BOOL * _Nonnull stop)
+        {
+            NSArray *filteredContactsWithKey = [contactsWithKey filteredArrayUsingPredicate:predicate];
+            if ([filteredContactsWithKey count] > 0)
+            {
+                [result setObject:filteredContactsWithKey forKey:key];
+            }
+        }];
+        callback(result, nil);
+    }
 }
 
 - (void)saveToContacts:(NSArray<CNContact *> *)contacts

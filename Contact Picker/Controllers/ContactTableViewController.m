@@ -14,7 +14,7 @@
 #import "ContactTableCell.h"
 #import "AppConstants.h"
 
-@interface ContactTableViewController () <UITableViewDelegate, NITableViewModelDelegate, ContactTableViewPresenterProtocol>
+@interface ContactTableViewController () <UITableViewDelegate, UISearchResultsUpdating, NITableViewModelDelegate>
 
 @property ContactTableViewPresenter *presenter;
 @property NITableViewModel *viewModel;
@@ -43,6 +43,10 @@
     [self setupView];
     [self.tableView registerClass:[ContactTableCell class] forCellReuseIdentifier:TABLE_CELL_REUSE_ID];
     [self.presenter attachView:self];
+    [self getContacts];
+}
+
+- (void)getContacts {
     [self.presenter getAllContacts];
 }
 
@@ -99,6 +103,12 @@
     [self setupViewModelWithSearch:NO
                        withSummary:NO];
     [self.indicator stopAnimating];
+}
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    NSString *searchText = searchController.searchBar.text;
+    [self.presenter filteredContactsByText:searchText];
 }
 
 #pragma mark - NITableViewModelDelegate Protocol

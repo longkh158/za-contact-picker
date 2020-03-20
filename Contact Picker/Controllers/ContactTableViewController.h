@@ -10,8 +10,11 @@
 #define ContactTableViewController_h
 
 #import <UIKit/UIKit.h>
+#import "ContactTableViewPresenterProtocol.h"
 
-@interface ContactTableViewController : UITableViewController
+@interface ContactTableViewController : UITableViewController <ContactTableViewPresenterProtocol>
+
+- (void)getContacts;
 
 @end
 
