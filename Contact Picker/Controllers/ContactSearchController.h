@@ -9,7 +9,7 @@
 #ifndef ContactSearchController_h
 #define ContactSearchController_h
 
-#import <UIKit/UIKit.h>s
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

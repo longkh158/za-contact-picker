@@ -21,7 +21,7 @@
     NSAssert(completion != nil, @"nil given to completion handler");
     // presenter will pop the block out of the stack when it returns, so we must keep a strong pointer
     __strong __block CompletionHandler _completion = completion;
-    if (completion)
+    if (_completion)
     {
         switch ([ContactDataAdapter contactDataAuthorizationStatus])
         {
@@ -35,7 +35,7 @@
                 NSError *error = [[NSError alloc] initWithDomain:NSStringFromClass([self class])
                                                             code:403
                                                         userInfo:details];
-                completion(nil, error);
+                _completion(nil, error);
                 break;
             }
             case ContactDataAuthorizationStatusAuthorized:
@@ -58,11 +58,11 @@
                 {
                     if (!granted)
                     {
-                        completion(nil, error);
+                        _completion(nil, error);
                     }
                     else
                     {
-                        [self fetchContactsWithCompletion:completion];
+                        [self fetchContactsWithCompletion:_completion];
                     }
                 }];
                 break;

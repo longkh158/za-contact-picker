@@ -31,6 +31,7 @@
 		A162364B2420B71D006E36C8 /* ContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A162364A2420B71D006E36C8 /* ContactTableCell.m */; };
 		A162364E2420BBA2006E36C8 /* ContactTableCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A162364D2420BBA2006E36C8 /* ContactTableCellViewModel.m */; };
 		A191E2572421E062002824F7 /* ImageCacheService.m in Sources */ = {isa = PBXBuildFile; fileRef = A191E2562421E062002824F7 /* ImageCacheService.m */; };
+		A1FE64D2242463210062FDE4 /* NSMutableArray+QueueAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FE64D1242463210062FDE4 /* NSMutableArray+QueueAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +104,8 @@
 		A162364F2420BC14006E36C8 /* ZAViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZAViewModel.h; sourceTree = "<group>"; };
 		A191E2552421D874002824F7 /* ImageCacheService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCacheService.h; sourceTree = "<group>"; };
 		A191E2562421E062002824F7 /* ImageCacheService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageCacheService.m; sourceTree = "<group>"; };
+		A1FE64D0242463210062FDE4 /* NSMutableArray+QueueAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+QueueAdditions.h"; sourceTree = "<group>"; };
+		A1FE64D1242463210062FDE4 /* NSMutableArray+QueueAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+QueueAdditions.m"; sourceTree = "<group>"; };
 		AD0F276444786B6E31BB7CC8 /* libPods-Contact PickerUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Contact PickerUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B35C12BAAA7A93EC9CFBB693 /* Pods-Contact Picker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contact Picker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Contact Picker/Pods-Contact Picker.debug.xcconfig"; sourceTree = "<group>"; };
 		BCDC255ACBC90E8F5E7068CC /* Pods-Contact Picker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contact Picker.release.xcconfig"; path = "Pods/Target Support Files/Pods-Contact Picker/Pods-Contact Picker.release.xcconfig"; sourceTree = "<group>"; };
@@ -300,6 +303,8 @@
 				A162363524207D0C006E36C8 /* ZASingleton.h */,
 				A156F7CA242312DC00AD030E /* NSDictionary+SortedDictionary.h */,
 				A156F7CB242312DC00AD030E /* NSDictionary+SortedDictionary.m */,
+				A1FE64D0242463210062FDE4 /* NSMutableArray+QueueAdditions.h */,
+				A1FE64D1242463210062FDE4 /* NSMutableArray+QueueAdditions.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -560,6 +565,7 @@
 				A162364E2420BBA2006E36C8 /* ContactTableCellViewModel.m in Sources */,
 				A16235F924206C8F006E36C8 /* ViewController.m in Sources */,
 				A16235F324206C8F006E36C8 /* AppDelegate.m in Sources */,
+				A1FE64D2242463210062FDE4 /* NSMutableArray+QueueAdditions.m in Sources */,
 				A162363A2420810E006E36C8 /* ZAContact.m in Sources */,
 				A16236472420B4EA006E36C8 /* ContactTableViewPresenter.m in Sources */,
 				A162360424206C91006E36C8 /* main.m in Sources */,

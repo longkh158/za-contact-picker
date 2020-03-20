@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "ContactDataAdapter.h"
 
 @interface Contact_PickerTests : XCTestCase
 
@@ -34,4 +35,29 @@
     }];
 }
 
+- (void)testDataAdapterFetchPerformance
+{
+    [self measureBlock:^
+    {
+        dispatch_group_t group = dispatch_group_create();
+        dispatch_group_async(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+        {
+            dispatch_apply(1000, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t idx)
+            {
+                [[ContactDataAdapter sharedInstance] fetchContactsWithKeys:nil
+                                                                usingQueue:nil
+                                                                  callback:^(NSDictionary<NSString *,NSArray *> * _Nullable data, NSError * _Nullable err)
+                {
+                    static dispatch_once_t onceToken;
+                    dispatch_once(&onceToken, ^{
+                        NSLog(@"%@", data);
+                    });
+                }];
+            });
+        });
+        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    }];
+}
+
 @end
+	

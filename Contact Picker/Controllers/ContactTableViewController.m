@@ -20,6 +20,8 @@
 @property NITableViewModel *viewModel;
 @property NSArray<NSString *> *contactKeys;
 
+@property UIActivityIndicatorView *indicator;
+
 @end
 
 @implementation ContactTableViewController
@@ -29,6 +31,7 @@
     self = [super init];
     if (self)
     {
+        self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
         self.tableView.allowsMultipleSelection = YES;
     }
     return self;
@@ -50,6 +53,14 @@
     self.presenter = [[ContactTableViewPresenter alloc] init];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.sectionIndexColor = [UIColor systemGrayColor];
+    [self setupIndicator];
+}
+
+- (void)setupIndicator {
+    self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
+    self.indicator.hidesWhenStopped = YES;
+    self.indicator.center = self.view.center;
+    [self.view addSubview:self.indicator];
 }
 
 - (void)setupViewModelWithSearch:(BOOL)showSearch
@@ -76,12 +87,18 @@
 
 #pragma mark - Presenter Protocol
 
+- (void)willFetchData
+{
+    [self.indicator startAnimating];
+}
+
 - (void)didFetchData:(NSArray *)data
            withError:(NSError *)error
 {
     self.viewModel = [[NITableViewModel alloc] initWithSectionedArray:data delegate:self];
     [self setupViewModelWithSearch:NO
                        withSummary:NO];
+    [self.indicator stopAnimating];
 }
 
 #pragma mark - NITableViewModelDelegate Protocol

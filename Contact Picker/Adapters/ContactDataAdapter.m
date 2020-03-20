@@ -11,18 +11,22 @@
 #import "ContactDataAdapter.h"
 #import "ZAContact.h"
 #import "AppConstants.h"
+#import "NSMutableArray+QueueAdditions.h"
 
 @interface ContactDataAdapter () <DataAdapter>
 
-@property dispatch_semaphore_t semaphore;
+@property dispatch_queue_t internalQueue;
 @property CNContactStore *store;
 @property NSArray *keysToFetch;
 @property (readonly, nonatomic) NSArray *allowedKeys;
 @property NSDictionary<ContactDataKey, id <CNKeyDescriptor>> *keyMapping;
 @property NSDictionary<NSString *, NSArray<ZAContact *> *> *contacts;
+@property (getter=isFetching) BOOL fetching;
+@property NSMutableArray<FetchDataCallback> *cbQueue;
 
 - (NSDictionary *)sortedContactsDict:(NSArray<CNContact *> *)contacts;
 - (NSArray *)filteredKeysToFetch:(NSArray *)keysToFetch;
+- (void)executeCbQueueWithResult:(NSDictionary * _Nullable)result withError:(NSError * _Nullable)error;
 
 @end
 
@@ -33,7 +37,9 @@
     self = [super init];
     if (self)
     {
-        _semaphore = dispatch_semaphore_create(MAXIMUM_CALLBACKS_ALLOWED);
+        _fetching = NO;
+        _cbQueue = [NSMutableArray array];
+        _internalQueue = dispatch_queue_create("ContactDataAdapterQueue", DISPATCH_QUEUE_SERIAL);
         _store = [[CNContactStore alloc] init];
         _allowedKeys = @[
             CNContactIdentifierKey,
@@ -71,13 +77,16 @@
                    usingQueue:(dispatch_queue_t _Nullable)queue
                      callback:(FetchDataCallback _Nonnull)callback
 {
-    NSArray *keys = [NSArray arrayWithArray:self.allowedKeys];
-    if (keysToFetch)
+    if (callback)
     {
-        keys = [self filteredKeysToFetch:keysToFetch];
+        NSArray *keys = [NSArray arrayWithArray:self.allowedKeys];
+        if (keysToFetch)
+        {
+            keys = [self filteredKeysToFetch:keysToFetch];
+        }
+        self.keysToFetch = keys;
+        [self fetchDataUsingQueue:queue withCallback:callback];
     }
-    self.keysToFetch = keys;
-    [self fetchDataUsingQueue:queue withCallback:callback];
 }
 
 #pragma mark - DataAdapter Protocol
@@ -90,45 +99,45 @@
     NSError __block *fetchError;
     if (callback)
     {
-        dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
-        if (self.contacts)
+        if (self.isFetching)
         {
-            callback(self.contacts, nil);
-        }
-        else
-        {
-            dispatch_queue_t queueToExecute = queue ? queue : dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-            dispatch_async(queueToExecute, ^
+            dispatch_async(self.internalQueue, ^
             {
-                [self.store enumerateContactsWithFetchRequest:request error:&fetchError usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop)
+                [self.cbQueue addObject:callback];
+            });
+            return;
+        }
+        dispatch_queue_t queueToExecute = queue ? queue : self.internalQueue;
+        [self setFetching:YES];
+        dispatch_async(queueToExecute, ^
+        {
+            [self.cbQueue addObject:callback];
+            [self.store enumerateContactsWithFetchRequest:request error:&fetchError usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop)
+            {
+                NSAssert(fetchError == nil, @"fetch contacts error: %@", fetchError);
+                if (fetchError)
                 {
-                    NSAssert(fetchError == nil, @"fetch contacts error: %@", fetchError);
-                    if (fetchError)
-                    {
-                        *stop = YES;
-                    }
-                    else
-                    {
-                        [contacts addObject:contact];
-                    }
-                }];
-                if (!fetchError)
-                {
-                    [self saveToContacts:contacts];
-                    dispatch_semaphore_signal(self.semaphore);
-                    callback(self.contacts, nil);
+                    *stop = YES;
                 }
                 else
                 {
-                    NSDictionary *details = @{
-                        NSLocalizedFailureReasonErrorKey: @"fetch contacts error",
-                    };
-                    NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:500 userInfo:details];
-                    dispatch_semaphore_signal(self.semaphore);
-                    callback(nil, error);
+                    [contacts addObject:contact];
                 }
-            });
-        }
+            }];
+            if (!fetchError)
+            {
+                [self saveToContacts:contacts];
+                [self executeCbQueueWithResult:self.contacts withError:nil];
+            }
+            else
+            {
+                NSDictionary *details = @{
+                    NSLocalizedFailureReasonErrorKey: @"fetch contacts error",
+                };
+                NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:500 userInfo:details];
+                [self executeCbQueueWithResult:nil withError:error];
+            }
+        });
     }
 }
 
@@ -190,6 +199,17 @@
         [result[key] addObject:contact];
     }];
     return result;
+}
+
+- (void)executeCbQueueWithResult:(NSDictionary *)result
+                       withError:(NSError *)error
+{
+    [self setFetching:NO];
+    [self.cbQueue enumerateObjectsWithOptions:NSEnumerationConcurrent
+                                   usingBlock:^(FetchDataCallback  _Nonnull cb, NSUInteger idx, BOOL * _Nonnull stop) {
+        cb(result, error);
+    }];
+    [self.cbQueue removeAllObjects];
 }
 
 + (ContactDataAuthorizationStatus)contactDataAuthorizationStatus
