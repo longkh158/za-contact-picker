@@ -12,9 +12,7 @@
 #include <Foundation/Foundation.h>
 #include <CoreGraphics/CoreGraphics.h>
 
-/// Default height of table cell in an \c UITableView.
 static const CGFloat TABLE_CELL_HEIGHT = 64.0;
-
 static NSString * const TABLE_CELL_REUSE_ID = @"contact_picker_table_cell";
 
 static const NSUInteger CONTACTS_SELECTION_LIMIT = 5;

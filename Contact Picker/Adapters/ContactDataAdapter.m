@@ -127,14 +127,25 @@
             if (!fetchError)
             {
                 [self saveToContacts:contacts];
-                [self executeCbQueueWithResult:self.contacts withError:nil];
+                if ([contacts count] == 0)
+                {
+                    NSDictionary *details = @{
+                        NSLocalizedFailureReasonErrorKey: @"fetch contacts empty",
+                    };
+                    NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:FETCH_EMPTY userInfo:details];
+                    [self executeCbQueueWithResult:nil withError:error];
+                }
+                else
+                {
+                    [self executeCbQueueWithResult:self.contacts withError:nil];
+                }
             }
             else
             {
                 NSDictionary *details = @{
                     NSLocalizedFailureReasonErrorKey: @"fetch contacts error",
                 };
-                NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:500 userInfo:details];
+                NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:FETCH_ERROR userInfo:details];
                 [self executeCbQueueWithResult:nil withError:error];
             }
         });

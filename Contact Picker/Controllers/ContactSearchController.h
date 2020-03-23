@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ContactSearchController : UISearchController
 
+@property ViewController *mainVC;
+
 - (instancetype)init;
 - (instancetype)initWithSearchResultsController:(UIViewController * _Nullable)controller;
 

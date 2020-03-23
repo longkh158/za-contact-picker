@@ -20,4 +20,10 @@
 #define COLOR_PETER_RIVER   RGBCOLOR(52 , 152, 219)
 #define COLOR_POMEGRANATE   RGBCOLOR(192, 57 , 43 )
 
+@interface ColorConstants : NSObject
+
++ (NSArray *)colorArray;
+
+@end
+
 #endif /* ColorConstants_h */

@@ -33,7 +33,7 @@
                     NSLocalizedFailureReasonErrorKey: @"No permission to access contacts data",
                 };
                 NSError *error = [[NSError alloc] initWithDomain:NSStringFromClass([self class])
-                                                            code:403
+                                                            code:FETCH_UNAUTHORIZED
                                                         userInfo:details];
                 _completion(nil, error);
                 break;

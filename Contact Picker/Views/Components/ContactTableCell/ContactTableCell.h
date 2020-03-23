@@ -17,8 +17,11 @@
 
 @property (readonly) NSString *identifier;
 
-- (instancetype)init;
+- (void)awakeFromNib;
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 - (void)updateWithViewModel:(ContactTableCellViewModel *)viewModel;
+- (void)setInitialsBgColorForIndexPath:(NSIndexPath *)indexPath;
+- (void)toggleSelect;
 
 @end
 

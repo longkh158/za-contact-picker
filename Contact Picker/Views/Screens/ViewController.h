@@ -7,9 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ContactTableCellViewModel.h"
 
 @interface ViewController : UIViewController
 
+@property (readonly) NSMutableArray<ContactTableCellViewModel *> *selectedContacts;
+
+- (void)addContactViewModel:(ContactTableCellViewModel *)vm;
+- (void)removeContactViewModel:(ContactTableCellViewModel *)vm;
+- (void)removeAllContacts;
 
 @end
 

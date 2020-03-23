@@ -12,10 +12,15 @@
 #import <UIKit/UIKit.h>
 #import "ContactTableViewPresenterProtocol.h"
 
-@interface ContactTableViewController : UITableViewController <ContactTableViewPresenterProtocol>
+NS_ASSUME_NONNULL_BEGIN
+
+@interface ContactTableViewController : UITableViewController <UISearchResultsUpdating, UISearchControllerDelegate, ContactTableViewPresenterProtocol>
 
 - (void)getContacts;
+- (void)attachSearchController:(UISearchController *)controller;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif /* ContactTableViewController_h */

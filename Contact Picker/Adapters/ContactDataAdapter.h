@@ -12,6 +12,7 @@
 #import "ZASingleton.h"
 #import "DataAdapter.h"
 #import "ZAContact.h"
+#import "ContactDataAdapterConstants.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

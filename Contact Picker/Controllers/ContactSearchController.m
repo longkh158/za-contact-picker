@@ -8,12 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "ViewController.h"
 #import "ContactSearchController.h"
-#import "ContactSearchResultController.h"
 
 @interface ContactSearchController ()
-
-@property ContactSearchResultController *result;
 
 @end
 

@@ -9,18 +9,24 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <Nimbus/NITableViewModel.h>
+#import <Nimbus/NITableViewActions.h>
+#import "ViewController.h"
 #import "ContactTableViewController.h"
 #import "ContactTableViewPresenter.h"
+#import "ContactSearchController.h"
 #import "ContactTableCell.h"
 #import "AppConstants.h"
 
-@interface ContactTableViewController () <UITableViewDelegate, UISearchResultsUpdating, NITableViewModelDelegate>
+@interface ContactTableViewController () <UITableViewDelegate, NITableViewModelDelegate>
 
 @property ContactTableViewPresenter *presenter;
-@property NITableViewModel *viewModel;
-@property NSArray<NSString *> *contactKeys;
+@property NITableViewModel *model;
+@property NITableViewModel *searchModel;
 
-@property UIActivityIndicatorView *indicator;
+@property (weak, nonatomic) UISearchController *search;
+@property (nonatomic) UIActivityIndicatorView *indicator;
+
+- (void)toggleSelectedStateForCellAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -41,7 +47,8 @@
 {
     [super viewDidLoad];
     [self setupView];
-    [self.tableView registerClass:[ContactTableCell class] forCellReuseIdentifier:TABLE_CELL_REUSE_ID];
+//    [self.tableView registerClass:[ContactTableCell class] forCellReuseIdentifier:TABLE_CELL_REUSE_ID];
+    [self.tableView registerNib:[UINib nibWithNibName:@"ContactTableCell" bundle:nil] forCellReuseIdentifier:TABLE_CELL_REUSE_ID];
     [self.presenter attachView:self];
     [self getContacts];
 }
@@ -67,17 +74,35 @@
     [self.view addSubview:self.indicator];
 }
 
-- (void)setupViewModelWithSearch:(BOOL)showSearch
-                     withSummary:(BOOL)showSummary
+- (void)setupViewModel:(NITableViewModel *)model
+            withSearch:(BOOL)showSearch
+           withSummary:(BOOL)showSummary
 {
-    self.tableView.dataSource = self.viewModel;
-    [self.viewModel setSectionIndexType:NITableViewModelSectionIndexAlphabetical
+    self.tableView.dataSource = model;
+    [model setSectionIndexType:NITableViewModelSectionIndexAlphabetical
                             showsSearch:showSearch
                            showsSummary:showSummary];
     [self.tableView reloadData];
 }
 
+- (void)attachSearchController:(UISearchController * _Nonnull)controller
+{
+    if (controller)
+    {
+         self.search = controller;
+    }
+}
+
 #pragma mark - UITableViewDelegate Protocol
+
+- (void)toggleSelectedStateForCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    ContactTableCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell)
+    {
+        [cell toggleSelect];
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -87,6 +112,86 @@
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
     view.contentView.backgroundColor = [UIColor whiteColor];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NITableViewModel *model = self.search.isActive ? self.searchModel : self.model;
+    ContactTableCellViewModel *vm = [model objectAtIndexPath:indexPath];
+    ViewController *vc = (ViewController *)self.parentViewController;
+    if (vm)
+    {
+        if ([vc respondsToSelector:@selector(addContactViewModel:)])
+        {
+            [vc addContactViewModel:vm];
+            [self toggleSelectedStateForCellAtIndexPath:indexPath];
+        }
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NITableViewModel *model = self.search.isActive ? self.searchModel : self.model;
+    ContactTableCellViewModel *vm = [model objectAtIndexPath:indexPath];
+    ViewController *vc = (ViewController *)self.parentViewController;
+    if (vm)
+    {
+        if ([vc respondsToSelector:@selector(removeContactViewModel:)])
+        {
+            [vc removeContactViewModel:vm];
+            [self toggleSelectedStateForCellAtIndexPath:indexPath];
+        }
+    }
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([((ViewController *)self.parentViewController).selectedContacts count] == CONTACTS_SELECTION_LIMIT)
+    {
+        return nil;
+    }
+    return indexPath;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(ContactTableCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ViewController *vc;
+    if ([self.parentViewController isKindOfClass:[ViewController class]])
+    {
+        vc = (ViewController *)self.parentViewController;
+    }
+    else
+    {
+        vc = ((ContactSearchController *)self.parentViewController).mainVC;
+    }
+    NITableViewModel *model = self.search.isActive ? self.searchModel : self.model;
+    ContactTableCellViewModel *vm = [model objectAtIndexPath:indexPath];
+    NSUInteger idx = [vc.selectedContacts indexOfObjectPassingTest:
+                      ^BOOL(ContactTableCellViewModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+    {
+        return obj.identifier == vm.identifier;
+    }];
+    if (idx != NSNotFound)
+    {
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    cell.accessoryType = idx != NSNotFound ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+}
+
+#pragma mark - UISearchControllerDelegate Protocol
+
+- (void)didDismissSearchController:(UISearchController *)searchController
+{
+    self.tableView.dataSource = self.model;
+    [self.tableView reloadData];
+}
+
+#pragma mark - UISearchResultsUpdating Protocol
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    NSString *searchText = searchController.searchBar.text;
+    [self.presenter filteredContactsByText:searchText];
 }
 
 #pragma mark - Presenter Protocol
@@ -99,16 +204,17 @@
 - (void)didFetchData:(NSArray *)data
            withError:(NSError *)error
 {
-    self.viewModel = [[NITableViewModel alloc] initWithSectionedArray:data delegate:self];
-    [self setupViewModelWithSearch:NO
-                       withSummary:NO];
+    if (self.search.isActive)
+    {
+        self.searchModel = [[NITableViewModel alloc] initWithSectionedArray:data delegate:self];
+        [self setupViewModel:self.searchModel withSearch:NO withSummary:NO];
+    }
+    else
+    {
+        self.model = [[NITableViewModel alloc] initWithSectionedArray:data delegate:self];
+        [self setupViewModel:self.model withSearch:NO withSummary:NO];
+    }
     [self.indicator stopAnimating];
-}
-
-- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
-{
-    NSString *searchText = searchController.searchBar.text;
-    [self.presenter filteredContactsByText:searchText];
 }
 
 #pragma mark - NITableViewModelDelegate Protocol
@@ -121,6 +227,7 @@
     ContactTableCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TABLE_CELL_REUSE_ID
                                                                   forIndexPath:indexPath];
     [cell updateWithViewModel:object];
+    [cell setInitialsBgColorForIndexPath:indexPath];
     return cell;
 }
 

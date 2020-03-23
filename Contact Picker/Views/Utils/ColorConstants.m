@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "ColorConstants.h"
 
-NSArray * colorArray()
+@implementation ColorConstants
+
++ (NSArray *)colorArray
 {
     return @[
         COLOR_EMERALD,
@@ -21,3 +23,5 @@ NSArray * colorArray()
         COLOR_POMEGRANATE,
     ];
 }
+
+@end
