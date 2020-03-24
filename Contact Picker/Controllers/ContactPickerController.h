@@ -13,8 +13,10 @@
 
 @interface ContactPickerController : UICollectionViewController
 
-- (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout;
+@property ViewController *parent;
+
 - (void)attachViewModel:(NSMutableArray *)vm;
+- (void)refreshUI;
 
 @end
 

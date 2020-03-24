@@ -14,6 +14,7 @@
 
 @property NSString *identifier;
 @property NSString *fullName;
+@property BOOL hasImageData;
 
 @end
 
@@ -29,6 +30,7 @@
         _lastName = contact.familyName;
         _phoneNumbers = contact.phoneNumbers;
         _fullName = [CNContactFormatter stringFromContact:contact style:CNContactFormatterStyleFullName];
+        _hasImageData = contact.imageDataAvailable;
     }
     return self;
 }

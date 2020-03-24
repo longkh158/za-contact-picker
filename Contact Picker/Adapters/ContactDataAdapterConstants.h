@@ -13,4 +13,12 @@ static NSInteger FETCH_ERROR = 500;
 static NSInteger FETCH_EMPTY = 404;
 static NSInteger FETCH_UNAUTHORIZED = 401;
 
+@interface ContactDataAdapterConstants : NSObject
+
++ (NSArray *)allowedKeys;
++ (NSArray *)auxKeys;
++ (NSDictionary<NSString *, id> *)keyMappings;
+
+@end
+
 #endif /* ContactDataAdapterConstants_h */

@@ -30,6 +30,7 @@ static ContactDataKey const ContactDataKeyFirstName = @"ContactDataKeyFirstName"
 static ContactDataKey const ContactDataKeyLastName = @"ContactDataKeyLastName";
 static ContactDataKey const ContactDataKeyPhoneNumbers = @"ContactDataKeyPhoneNumbers";
 static ContactDataKey const ContactDataKeyFullName = @"ContactDataKeyFullName";
+static ContactDataKey const ContactThumbnailImage = @"ContactThumbnailImage";
 
 typedef void (^RequestAccessCompletionHandler)(BOOL granted, NSError * _Nullable error);
 
@@ -45,6 +46,8 @@ typedef void (^RequestAccessCompletionHandler)(BOOL granted, NSError * _Nullable
 - (void)filteredContactsWithPredicate:(NSPredicate *)predicate
                            usingQueue:(dispatch_queue_t _Nullable)queue
                              callback:(FetchDataCallback _Nullable)callback;
+- (void)imageDataForContactWithIdentifier:(NSString *)identifier
+                                     callback:(void (^)(NSData * imageData, NSError * error))callback;
 
 + (ContactDataAuthorizationStatus)contactDataAuthorizationStatus;
 

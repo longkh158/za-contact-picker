@@ -24,6 +24,8 @@
 @property (nonatomic) UIStackView *navbarTitle;
 @property (nonatomic) UILabel *selectedCountLabel;
 
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
+
 - (void)setupSearchBar;
 - (void)setupContactsList;
 - (void)updateSelectedLabel;
@@ -37,20 +39,40 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self initialize];
-    [self setupContactsList];
     [self setupNavigationBar];
     [self.contactsVC attachSearchController:self.search];
-    self.pickerVC = [[ContactPickerController alloc] initWithCollectionViewLayout:[UICollectionViewFlowLayout new]];
+    self.pickerVC.parent = self;
     [self.pickerVC attachViewModel:self.selectedContacts];
-    [self addChildViewController:self.pickerVC];
-    [self.view addSubview:self.pickerVC.view];
+    self.sendButton.backgroundColor = [UIColor systemBlueColor];
+    self.sendButton.layer.masksToBounds = YES;
+    self.sendButton.layer.cornerRadius = self.sendButton.frame.size.width / 2.0;
 }
 
 #pragma mark - View Setup
 
+- (ContactPickerController *)getPickerController
+{
+    NSUInteger idx = [self.childViewControllers indexOfObjectPassingTest:^BOOL(__kindof UIViewController * _Nonnull controller, NSUInteger idx, BOOL * _Nonnull stop)
+    {
+        return [controller isKindOfClass:[ContactPickerController class]];
+    }];
+    return self.childViewControllers[idx];
+}
+
+- (UIViewController *)getControllerWithClass:(Class)class
+{
+    NSUInteger idx = [self.childViewControllers indexOfObjectPassingTest:^BOOL(__kindof UIViewController * _Nonnull controller, NSUInteger idx, BOOL * _Nonnull stop)
+    {
+        return [controller isKindOfClass:class];
+    }];
+    return self.childViewControllers[idx];
+}
+
 - (void)initialize
 {
     self.selectedContacts = [NSMutableArray arrayWithCapacity:CONTACTS_SELECTION_LIMIT];
+    self.pickerVC = [self getPickerController];
+    self.contactsVC = (ContactTableViewController *)[self getControllerWithClass:[ContactTableViewController class]];
 }
 
 //! Prepare navigation bar
@@ -82,6 +104,7 @@
     self.contactsVC = [[ContactTableViewController alloc] init];
     [self addChildViewController:self.contactsVC];
     [self.view addSubview:self.contactsVC.view];
+    [self.contactsVC.tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
 }
 
 //! Prepare search controller
@@ -105,7 +128,7 @@
     if (idx == NSNotFound)
     {
         [self.selectedContacts addObject:vm];
-        NSLog(@"currently having %lu element(s)", [self.selectedContacts count]);
+        [self.pickerVC refreshUI];
     }
     [self updateSelectedLabel];
 }
@@ -120,7 +143,8 @@
     if (idx != NSNotFound)
     {
         [self.selectedContacts removeObjectAtIndex:idx];
-        NSLog(@"currently having %lu element(s)", [self.selectedContacts count]);
+        [self.pickerVC refreshUI];
+        [self.contactsVC refreshVM:vm];
     }
     [self updateSelectedLabel];
 }

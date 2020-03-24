@@ -41,6 +41,7 @@
     [super awakeFromNib];
     self.initialsLabel.layer.masksToBounds = YES;
     self.initialsLabel.layer.cornerRadius = self.initialsLabel.frame.size.width / 2.0;
+    self.avatar.contentMode = UIViewContentModeScaleToFill;
     self.avatar.layer.masksToBounds = YES;
     self.avatar.layer.cornerRadius = self.avatar.frame.size.width / 2.0;
     self.initialsLabel.textColor = [UIColor whiteColor];
@@ -69,6 +70,8 @@
 {
     NSArray *colors = [ColorConstants colorArray];
     NSUInteger colorIdx = (indexPath.row + indexPath.section) % [colors count];
+    self.initialsLabel.hidden = NO;
+    self.avatar.hidden = YES;
     self.initialsLabel.backgroundColor = colors[colorIdx];
 }
 
@@ -82,6 +85,16 @@
     else
     {
         self.accessoryType = UITableViewCellAccessoryNone;
+    }
+}
+
+- (void)updateAvatarWithImageData:(NSData *)imageData
+{
+    if (imageData)
+    {
+        self.initialsLabel.hidden = YES;
+        self.avatar.hidden = NO;
+        self.avatar.image = [UIImage imageWithData:imageData];
     }
 }
 

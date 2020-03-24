@@ -17,6 +17,7 @@
 @property NSString *firstName;
 @property NSString *lastName;
 @property NSArray *phoneNumbers;
+@property (readonly) BOOL hasImageData;
 
 - (NSString *)fullName;
 + (instancetype)contactWithCNContact:(CNContact *)contact;

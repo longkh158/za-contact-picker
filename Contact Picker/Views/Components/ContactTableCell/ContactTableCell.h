@@ -22,6 +22,7 @@
 - (void)updateWithViewModel:(ContactTableCellViewModel *)viewModel;
 - (void)setInitialsBgColorForIndexPath:(NSIndexPath *)indexPath;
 - (void)toggleSelect;
+- (void)updateAvatarWithImageData:(NSData *)imageData;
 
 @end
 

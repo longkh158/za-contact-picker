@@ -15,6 +15,7 @@
 
 @property (readonly) NSString *identifier;
 @property (readonly) NSString *fullName;
+@property (readonly, getter=isImageDataAvailable) BOOL hasImageData;
 
 @end
 

@@ -14,6 +14,7 @@
 
 @property NSString *identifier;
 @property NSString *fullName;
+@property (getter=isImageDataAvailable) BOOL hasImageData;
 
 @end
 
@@ -23,6 +24,7 @@
 {
     ContactTableCellViewModel *viewModel = [[ContactTableCellViewModel alloc] init];
     viewModel.identifier = model.identifier;
+    viewModel.hasImageData = model.hasImageData;
     viewModel.fullName = [model fullName];
     return viewModel;
 }

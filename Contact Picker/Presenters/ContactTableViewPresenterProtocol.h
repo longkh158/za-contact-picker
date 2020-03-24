@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 - (void)didFetchEmpty;
 - (void)willFetchData;
+- (void)didFetchImage:(NSData *)imageData forCellVM:(id)vm;
 
 @end
 

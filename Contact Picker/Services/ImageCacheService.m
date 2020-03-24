@@ -39,7 +39,14 @@
 
 - (NSData * _Nullable)imageDataForKey:(NSString * _Nonnull)key
 {
-    return [self.cache objectForKey:key];
+    NSData *imageData = [self.cache objectForKey:key];
+#if DEBUG
+    if (imageData)
+    {
+        NSLog(@"cache hit with identifier: %@", key);
+    }
+#endif
+    return imageData;
 }
 
 - (void)purgeCache

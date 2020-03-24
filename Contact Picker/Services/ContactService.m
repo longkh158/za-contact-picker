@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ContactService.h"
+#import "ImageCacheService.h"
 #import "ContactDataAdapter.h"
 
 @interface ContactService ()
@@ -90,6 +91,38 @@
         {
             _completion(filteredContacts, nil);
         }];
+    }
+}
+
+- (void)fetchImageDataOfContactWithIdentifier:(NSString *)identifier
+                               withCompletion:(FetchImageDataCallback)completion
+{
+    NSAssert(completion != nil, @"nil given to completion handler");
+    if (completion)
+    {
+        __strong __block FetchImageDataCallback _completion = completion;
+        NSData * _Nullable imageData = [[ImageCacheService sharedInstance] imageDataForKey:identifier];
+        if (!imageData)
+        {
+            [[ContactDataAdapter sharedInstance] imageDataForContactWithIdentifier:identifier
+                                                                          callback:
+             ^(NSData * _Nonnull imageData, NSError * _Nonnull error)
+            {
+                if (!error)
+                {
+                    [[ImageCacheService sharedInstance] setImageData:imageData withKey:identifier];
+                    _completion(imageData, nil);
+                }
+                else
+                {
+                    _completion(nil, error);
+                }
+            }];
+        }
+        else
+        {
+            _completion(imageData, nil);
+        }
     }
 }
 

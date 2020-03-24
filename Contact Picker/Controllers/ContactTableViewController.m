@@ -47,9 +47,12 @@
 {
     [super viewDidLoad];
     [self setupView];
-//    [self.tableView registerClass:[ContactTableCell class] forCellReuseIdentifier:TABLE_CELL_REUSE_ID];
     [self.tableView registerNib:[UINib nibWithNibName:@"ContactTableCell" bundle:nil] forCellReuseIdentifier:TABLE_CELL_REUSE_ID];
     [self.presenter attachView:self];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
     [self getContacts];
 }
 
@@ -91,6 +94,12 @@
     {
          self.search = controller;
     }
+}
+
+- (void)refreshVM:(ContactTableCellViewModel *)vm
+{
+    NSIndexPath *indexPath = [self.model indexPathForObject:vm];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark - UITableViewDelegate Protocol
@@ -219,7 +228,7 @@
 
 #pragma mark - NITableViewModelDelegate Protocol
 
-- (UITableViewCell *)tableViewModel:(NITableViewModel *)tableViewModel
+- (ContactTableCell *)tableViewModel:(NITableViewModel *)tableViewModel
                    cellForTableView:(UITableView *)tableView
                         atIndexPath:(NSIndexPath *)indexPath
                          withObject:(ContactTableCellViewModel *)object
@@ -227,7 +236,24 @@
     ContactTableCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TABLE_CELL_REUSE_ID
                                                                   forIndexPath:indexPath];
     [cell updateWithViewModel:object];
-    [cell setInitialsBgColorForIndexPath:indexPath];
+    if (object.isImageDataAvailable)
+    {
+        [self.presenter fetchImageForContactWithIdentifier:object.identifier callback:^(NSData * _Nullable imageData, NSError * _Nullable error)
+        {
+            if (!error)
+            {
+                ContactTableCell *updatedCell = [self.tableView cellForRowAtIndexPath:indexPath];
+                if (updatedCell)
+                {
+                    [updatedCell updateAvatarWithImageData:imageData];
+                }
+            }
+        }];
+    }
+    else
+    {
+        [cell setInitialsBgColorForIndexPath:indexPath];
+    }
     return cell;
 }
 

@@ -64,6 +64,27 @@
     }
 }
 
+- (void)fetchImageForContactWithIdentifier:(NSString * _Nonnull)identifier
+                                  callback:(void (^)(NSData * _Nullable imageData, NSError * _Nullable error))callback
+{
+    if (callback && identifier)
+    {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^
+        {
+            [self.service fetchImageDataOfContactWithIdentifier:identifier withCompletion:^(NSData * _Nullable imageData, NSError * _Nullable error)
+            {
+                if (!error)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^
+                    {
+                        callback(imageData, nil);
+                    });
+                }
+            }];
+        });
+    }
+}
+
 - (NSArray * _Nonnull)mapToVMSectionedArray:(NSDictionary<NSString *,NSArray<ZAContact *> *> * _Nonnull)contacts
 {
     NSMutableArray *result = [NSMutableArray array];

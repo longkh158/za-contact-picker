@@ -8,33 +8,44 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "AppConstants.h"
 #import "ViewController.h"
 #import "ContactPickerController.h"
+#import "ContactPickerCell.h"
 #import "ContactTableCellViewModel.h"
 
-@interface ContactPickerController () <UICollectionViewDataSource>
+@interface ContactPickerController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, ContactPickerCellDelegate>
 
-@property ViewController *parent;
-@property NSArray<ContactTableCellViewModel *> *selected;
+@property NSMutableArray<ContactTableCellViewModel *> *selected;
+
+- (void)setupBackground;
 
 @end
 
 @implementation ContactPickerController
 
-- (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout
+- (void)awakeFromNib
 {
-    self = [super initWithCollectionViewLayout:layout];
-    if (self)
-    {
-        _selected = [NSArray array];
-    }
-    return self;
+    [super awakeFromNib];
+    self.selected = [NSMutableArray arrayWithCapacity:CONTACTS_SELECTION_LIMIT];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.parent = (ViewController *)self.parentViewController;
+    [self setupBackground];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"ContactPickerCell" bundle:nil]
+          forCellWithReuseIdentifier:COLLECTION_CELL_REUSE_ID];
+}
+
+- (void)setupBackground
+{
+    self.collectionView.backgroundColor = [UIColor clearColor];
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemMaterial];
+    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blur];
+    blurEffectView.frame = self.collectionView.bounds;
+    blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.collectionView.backgroundView = blurEffectView;
 }
 
 - (void)attachViewModel:(NSMutableArray *)vm
@@ -45,16 +56,55 @@
     }
 }
 
+- (void)refreshUI
+{
+    [self.collectionView reloadData];
+}
+
+- (void)handleRemoveSelectedContactWithIdentifier:(NSString *)identifier
+{
+    if (self.parent && identifier)
+    {
+        NSUInteger idx = [self.selected indexOfObjectPassingTest:^BOOL(ContactTableCellViewModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+        {
+            return [obj.identifier isEqualToString:identifier];
+        }];
+        if (idx != NSNotFound)
+        {
+            [self.parent removeContactViewModel:self.selected[idx]];
+        }
+    }
+}
+
 #pragma mark - UICollectionViewDataSource Protocol
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self.selected count];
+    if (self.selected)
+    {
+        return [self.selected count];
+    }
+    return 0;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (ContactPickerCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    ContactTableCellViewModel *vm = self.selected[indexPath.row];
+    if (self.selected)
+    {
+        ContactTableCellViewModel *vm = self.selected[indexPath.section];
+        ContactPickerCell *cell = [self.collectionView
+                                   dequeueReusableCellWithReuseIdentifier:COLLECTION_CELL_REUSE_ID
+                                                             forIndexPath:indexPath];
+        [cell updateWithViewModel:vm];
+        [cell setInitialsBgColorForIndexPath:indexPath];
+        [cell attachDelegate:self];
+        return cell;
+    }
     return nil;
 }
 

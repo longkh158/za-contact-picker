@@ -11,6 +11,7 @@
 #import "ContactDataAdapter.h"
 #import "ZAContact.h"
 #import "AppConstants.h"
+#import "ContactDataAdapterConstants.h"
 #import "NSMutableArray+QueueAdditions.h"
 
 @interface ContactDataAdapter () <DataAdapter>
@@ -18,8 +19,6 @@
 @property dispatch_queue_t internalQueue;
 @property CNContactStore *store;
 @property NSArray *keysToFetch;
-@property (readonly, nonatomic) NSArray *allowedKeys;
-@property NSDictionary<ContactDataKey, id <CNKeyDescriptor>> *keyMapping;
 @property NSDictionary<NSString *, NSArray<ZAContact *> *> *contacts;
 @property (getter=isFetching) BOOL fetching;
 @property NSMutableArray<FetchDataCallback> *cbQueue;
@@ -41,15 +40,7 @@
         _cbQueue = [NSMutableArray array];
         _internalQueue = dispatch_queue_create("ContactDataAdapterQueue", DISPATCH_QUEUE_SERIAL);
         _store = [[CNContactStore alloc] init];
-        _allowedKeys = @[
-            CNContactIdentifierKey,
-            CNContactGivenNameKey,
-            CNContactFamilyNameKey,
-            CNContactPhoneNumbersKey,
-            [CNContact descriptorForAllComparatorKeys],
-            [CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName],
-        ];
-        _keysToFetch = _allowedKeys;
+        _keysToFetch = [ContactDataAdapterConstants allowedKeys];
     }
     return self;
 }
@@ -59,7 +50,8 @@
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:[keysToFetch count]];
     [keysToFetch enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop)
     {
-        if ([self.allowedKeys containsObject:key])
+        id cnKey = [[ContactDataAdapterConstants keyMappings] objectForKey:key];
+        if ([[ContactDataAdapterConstants allowedKeys] containsObject:cnKey])
         {
             [result addObject:key];
         }
@@ -79,11 +71,12 @@
 {
     if (callback)
     {
-        NSArray *keys = [NSArray arrayWithArray:self.allowedKeys];
+        NSMutableArray *keys = [NSMutableArray arrayWithArray:[ContactDataAdapterConstants allowedKeys]];
         if (keysToFetch)
         {
-            keys = [self filteredKeysToFetch:keysToFetch];
+            keys = [[self filteredKeysToFetch:keysToFetch] mutableCopy];
         }
+        [keys addObjectsFromArray:[ContactDataAdapterConstants auxKeys]];
         self.keysToFetch = keys;
         [self fetchDataUsingQueue:queue withCallback:callback];
     }
@@ -225,6 +218,27 @@
         cb(result, error);
     }];
     [self.cbQueue removeAllObjects];
+}
+
+- (void)imageDataForContactWithIdentifier:(NSString *)identifier
+                                     callback:(void (^)(NSData * _Nullable imageData, NSError * _Nullable error))callback
+{
+    NSError *fetchError;
+    CNContact *contact = [self.store unifiedContactWithIdentifier:identifier
+                                                      keysToFetch:@[CNContactThumbnailImageDataKey]
+                                                            error:&fetchError];
+    if (!fetchError)
+    {
+        callback(contact.thumbnailImageData, nil);
+    }
+    else
+    {
+        NSDictionary *details = @{
+            NSLocalizedFailureReasonErrorKey: @"fetch contact image error",
+        };
+        NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:FETCH_ERROR userInfo:details];
+        callback(nil, error);
+    }
 }
 
 + (ContactDataAuthorizationStatus)contactDataAuthorizationStatus
