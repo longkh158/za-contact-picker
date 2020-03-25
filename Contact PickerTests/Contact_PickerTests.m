@@ -7,7 +7,9 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "ContactService.h"
 #import "ContactDataAdapter.h"
+#import "ContactTableViewPresenter.h"
 
 @interface Contact_PickerTests : XCTestCase
 
@@ -32,6 +34,23 @@
     // This is an example of a performance test case.
     [self measureBlock:^{
         // Put the code you want to measure the time of here.
+    }];
+}
+
+- (void)testContactServicePerformance
+{
+    ContactService *service = [[ContactService alloc] init];
+    dispatch_group_t group = dispatch_group_create();
+    [self measureBlock:^
+    {
+        dispatch_group_async(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+        {
+            [service fetchContactsWithCompletion:^(NSDictionary<NSString *,NSArray<ZAContact *> *> * _Nullable contacts, NSError * _Nullable err)
+            {
+                
+            }];
+        });
+        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
     }];
 }
 

@@ -13,6 +13,7 @@
 
 @property (readonly) NSMutableArray<ContactTableCellViewModel *> *selectedContacts;
 
+- (void)showErrorView:(NSInteger)code;
 - (void)addContactViewModel:(ContactTableCellViewModel *)vm;
 - (void)removeContactViewModel:(ContactTableCellViewModel *)vm;
 - (void)removeAllContacts;

@@ -11,6 +11,8 @@
 
 #import "ZASingleton.h"
 #import "ZAContact.h"
+#import "ImageCacheService.h"
+#import "ContactDataAdapter.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

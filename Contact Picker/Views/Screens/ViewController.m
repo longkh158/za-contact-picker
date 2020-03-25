@@ -25,6 +25,8 @@
 @property (nonatomic) UILabel *selectedCountLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet UIButton *goToSettingsButton;
+@property (weak, nonatomic) IBOutlet UIStackView *noPermissionView;
 
 - (void)setupSearchBar;
 - (void)setupContactsList;
@@ -43,21 +45,12 @@
     [self.contactsVC attachSearchController:self.search];
     self.pickerVC.parent = self;
     [self.pickerVC attachViewModel:self.selectedContacts];
-    self.sendButton.backgroundColor = [UIColor systemBlueColor];
+    self.sendButton.backgroundColor = [UIColor clearColor];
     self.sendButton.layer.masksToBounds = YES;
     self.sendButton.layer.cornerRadius = self.sendButton.frame.size.width / 2.0;
 }
 
 #pragma mark - View Setup
-
-- (ContactPickerController *)getPickerController
-{
-    NSUInteger idx = [self.childViewControllers indexOfObjectPassingTest:^BOOL(__kindof UIViewController * _Nonnull controller, NSUInteger idx, BOOL * _Nonnull stop)
-    {
-        return [controller isKindOfClass:[ContactPickerController class]];
-    }];
-    return self.childViewControllers[idx];
-}
 
 - (UIViewController *)getControllerWithClass:(Class)class
 {
@@ -71,8 +64,9 @@
 - (void)initialize
 {
     self.selectedContacts = [NSMutableArray arrayWithCapacity:CONTACTS_SELECTION_LIMIT];
-    self.pickerVC = [self getPickerController];
+    self.pickerVC = (ContactPickerController *)[self getControllerWithClass:[ContactPickerController class]];
     self.contactsVC = (ContactTableViewController *)[self getControllerWithClass:[ContactTableViewController class]];
+    [self.goToSettingsButton addTarget:self action:@selector(handleSettingsButtonTouchDown:) forControlEvents:UIControlEventTouchDown];
 }
 
 //! Prepare navigation bar
@@ -118,6 +112,8 @@
     self.navigationItem.hidesSearchBarWhenScrolling = NO;
 }
 
+#pragma mark - Contact Selection
+
 - (void)addContactViewModel:(ContactTableCellViewModel *)vm
 {
     NSUInteger idx = [self.selectedContacts indexOfObjectPassingTest:
@@ -131,6 +127,7 @@
         [self.pickerVC refreshUI];
     }
     [self updateSelectedLabel];
+    [self updateSendButton];
 }
 
 - (void)removeContactViewModel:(ContactTableCellViewModel *)vm
@@ -147,7 +144,10 @@
         [self.contactsVC refreshVM:vm];
     }
     [self updateSelectedLabel];
+    [self updateSendButton];
 }
+
+#pragma mark - Helper Functions
 
 - (void)updateSelectedLabel
 {
@@ -160,6 +160,45 @@
     {
         self.selectedCountLabel.hidden = NO;
         self.selectedCountLabel.text = [NSString stringWithFormat:@"Selected: %lu/%lu", count, CONTACTS_SELECTION_LIMIT];
+    }
+}
+
+- (void)updateSendButton
+{
+    NSUInteger count = [self.selectedContacts count];
+    self.sendButton.enabled = count != 0;
+}
+
+- (void)showErrorView:(NSInteger)code
+{
+    if (code == FETCH_UNAUTHORIZED)
+    {
+        self.noPermissionView.hidden = NO;
+    }
+}
+
+#pragma mark - Button Actions
+
+- (void)handleSettingsButtonTouchDown:(UIButton *)sender
+{
+    NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+    UIApplication *application = [UIApplication sharedApplication];
+    if (@available(iOS 10, *))
+    {
+        if ([application canOpenURL:url])
+        {
+            [application openURL:url
+                         options:@{}
+               completionHandler:^(BOOL success)
+            {
+                NSAssert(success, @"Settings URL cannot be opened");
+            }];
+        }
+    }
+    else
+    {
+        BOOL success = [application openURL:url];
+        NSAssert(success, @"Settings URL cannot be opened");
     }
 }
 

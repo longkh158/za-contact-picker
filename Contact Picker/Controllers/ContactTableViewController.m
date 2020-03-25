@@ -12,7 +12,6 @@
 #import <Nimbus/NITableViewActions.h>
 #import "ViewController.h"
 #import "ContactTableViewController.h"
-#import "ContactTableViewPresenter.h"
 #import "ContactSearchController.h"
 #import "ContactTableCell.h"
 #import "AppConstants.h"
@@ -99,7 +98,12 @@
 - (void)refreshVM:(ContactTableCellViewModel *)vm
 {
     NSIndexPath *indexPath = [self.model indexPathForObject:vm];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    if (!indexPath)
+    {
+        indexPath = [self.searchModel indexPathForObject:vm];
+    }
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath]
+                          withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - UITableViewDelegate Protocol
@@ -116,11 +120,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return TABLE_CELL_HEIGHT;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
-{
-    view.contentView.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -213,6 +212,16 @@
 - (void)didFetchData:(NSArray *)data
            withError:(NSError *)error
 {
+    if (error)
+    {
+        NSLog(@"no permission to access contacts");
+        self.tableView.hidden = YES;
+        ViewController *parent = (ViewController *)self.parentViewController;
+        if ([parent respondsToSelector:@selector(showErrorView:)])
+        {
+            [parent showErrorView:error.code];
+        }
+    }
     if (self.search.isActive)
     {
         self.searchModel = [[NITableViewModel alloc] initWithSectionedArray:data delegate:self];

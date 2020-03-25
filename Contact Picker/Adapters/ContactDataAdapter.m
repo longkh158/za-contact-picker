@@ -177,7 +177,11 @@
 
 - (void)requestContactDataAccessWithCompetionHandler:(RequestAccessCompletionHandler)completionHandler
 {
-    [self.store requestAccessForEntityType:CNEntityTypeContacts completionHandler:completionHandler];
+    if (completionHandler)
+    {
+         [self.store requestAccessForEntityType:CNEntityTypeContacts
+                              completionHandler:completionHandler];
+    }
 }
 
 - (NSDictionary *)sortedContactsDict:(NSArray<CNContact *> *)contacts
@@ -223,21 +227,24 @@
 - (void)imageDataForContactWithIdentifier:(NSString *)identifier
                                      callback:(void (^)(NSData * _Nullable imageData, NSError * _Nullable error))callback
 {
-    NSError *fetchError;
-    CNContact *contact = [self.store unifiedContactWithIdentifier:identifier
-                                                      keysToFetch:@[CNContactThumbnailImageDataKey]
-                                                            error:&fetchError];
-    if (!fetchError)
+    if (callback && identifier)
     {
-        callback(contact.thumbnailImageData, nil);
-    }
-    else
-    {
-        NSDictionary *details = @{
-            NSLocalizedFailureReasonErrorKey: @"fetch contact image error",
-        };
-        NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:FETCH_ERROR userInfo:details];
-        callback(nil, error);
+        NSError *fetchError;
+        CNContact *contact = [self.store unifiedContactWithIdentifier:identifier
+                                                          keysToFetch:@[CNContactThumbnailImageDataKey]
+                                                                error:&fetchError];
+        if (!fetchError)
+        {
+            callback(contact.thumbnailImageData, nil);
+        }
+        else
+        {
+            NSDictionary *details = @{
+                NSLocalizedFailureReasonErrorKey: @"fetch contact image error",
+            };
+            NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:FETCH_ERROR userInfo:details];
+            callback(nil, error);
+        }
     }
 }
 

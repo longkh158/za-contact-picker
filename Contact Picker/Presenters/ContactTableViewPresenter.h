@@ -10,6 +10,7 @@
 #define ContactTableViewPresenter_h
 
 #import "ContactTableViewPresenterProtocol.h"
+#import "ContactService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -33,19 +33,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setupBackground];
     [self.collectionView registerNib:[UINib nibWithNibName:@"ContactPickerCell" bundle:nil]
           forCellWithReuseIdentifier:COLLECTION_CELL_REUSE_ID];
-}
-
-- (void)setupBackground
-{
-    self.collectionView.backgroundColor = [UIColor clearColor];
-    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemMaterial];
-    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blur];
-    blurEffectView.frame = self.collectionView.bounds;
-    blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.collectionView.backgroundView = blurEffectView;
 }
 
 - (void)attachViewModel:(NSMutableArray *)vm
@@ -58,7 +47,8 @@
 
 - (void)refreshUI
 {
-    [self.collectionView reloadData];
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
+    [self.collectionView reloadSections:indexSet];
 }
 
 - (void)handleRemoveSelectedContactWithIdentifier:(NSString *)identifier

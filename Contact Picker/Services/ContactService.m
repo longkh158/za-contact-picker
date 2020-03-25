@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "ContactService.h"
-#import "ImageCacheService.h"
-#import "ContactDataAdapter.h"
 
 @interface ContactService ()
 
@@ -27,7 +25,7 @@
         switch ([ContactDataAdapter contactDataAuthorizationStatus])
         {
             case ContactDataAuthorizationStatusRestricted:
-                // fallthrough
+                /* fallthrough */
             case ContactDataAuthorizationStatusDenied:
             {
                 NSDictionary *details = @{
@@ -94,11 +92,11 @@
     }
 }
 
-- (void)fetchImageDataOfContactWithIdentifier:(NSString *)identifier
-                               withCompletion:(FetchImageDataCallback)completion
+- (void)fetchImageDataOfContactWithIdentifier:(NSString * _Nonnull)identifier
+                               withCompletion:(FetchImageDataCallback _Nonnull)completion
 {
     NSAssert(completion != nil, @"nil given to completion handler");
-    if (completion)
+    if (completion && identifier)
     {
         __strong __block FetchImageDataCallback _completion = completion;
         NSData * _Nullable imageData = [[ImageCacheService sharedInstance] imageDataForKey:identifier];

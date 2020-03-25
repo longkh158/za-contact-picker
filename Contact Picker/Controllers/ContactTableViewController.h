@@ -10,7 +10,7 @@
 #define ContactTableViewController_h
 
 #import <UIKit/UIKit.h>
-#import "ContactTableViewPresenterProtocol.h"
+#import "ContactTableViewPresenter.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

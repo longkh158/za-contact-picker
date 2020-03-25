@@ -16,22 +16,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef enum ContactDataAuthorizationStatus : NSInteger
-{
-    ContactDataAuthorizationStatusNotDetermined = 0,
-    ContactDataAuthorizationStatusRestricted,
-    ContactDataAuthorizationStatusDenied,
-    ContactDataAuthorizationStatusAuthorized,
-}
-ContactDataAuthorizationStatus;
-
-typedef NSString * ContactDataKey NS_TYPED_ENUM;
-static ContactDataKey const ContactDataKeyFirstName = @"ContactDataKeyFirstName";
-static ContactDataKey const ContactDataKeyLastName = @"ContactDataKeyLastName";
-static ContactDataKey const ContactDataKeyPhoneNumbers = @"ContactDataKeyPhoneNumbers";
-static ContactDataKey const ContactDataKeyFullName = @"ContactDataKeyFullName";
-static ContactDataKey const ContactThumbnailImage = @"ContactThumbnailImage";
-
 typedef void (^RequestAccessCompletionHandler)(BOOL granted, NSError * _Nullable error);
 
 @interface ContactDataAdapter : NSObject <ZASingleton>

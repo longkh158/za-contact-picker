@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "ContactTableViewPresenter.h"
-#import "ContactService.h"
 #import "ContactTableCellViewModel.h"
 #import "ZAContact.h"
 #import "NSDictionary+SortedDictionary.h"
@@ -34,7 +33,7 @@
     return self;
 }
 
-- (void)attachView:(id<ContactTableViewPresenterProtocol>)view
+- (void)attachView:(id <ContactTableViewPresenterProtocol>)view
 {
     self.delegate = view;
 }
@@ -65,7 +64,7 @@
 }
 
 - (void)fetchImageForContactWithIdentifier:(NSString * _Nonnull)identifier
-                                  callback:(void (^)(NSData * _Nullable imageData, NSError * _Nullable error))callback
+                                  callback:(void (^ _Nonnull)(NSData * _Nullable imageData, NSError * _Nullable error))callback
 {
     if (callback && identifier)
     {
@@ -116,7 +115,7 @@
                 if ([self.delegate respondsToSelector:@selector(didFetchEmpty)])
                 {
                     dispatch_async(dispatch_get_main_queue(), ^
-                                   {
+                    {
                         [self.delegate didFetchEmpty];
                     });
                 }
@@ -124,10 +123,10 @@
             else
             {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-                               {
+                {
                     NSArray *vms = [self mapToVMSectionedArray:contacts];
                     dispatch_async(dispatch_get_main_queue(), ^
-                                   {
+                    {
                         [self.delegate didFetchData:vms withError:nil];
                     });
                 });
