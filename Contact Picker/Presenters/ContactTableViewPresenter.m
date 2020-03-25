@@ -109,7 +109,10 @@
     {
         if (err)
         {
-            [self.delegate didFetchData:nil withError:err];
+            if ([self.delegate respondsToSelector:@selector(didFetchData:withError:)])
+            {
+                [self.delegate didFetchData:nil withError:err];
+            }
         }
         else if (contacts)
         {
@@ -119,7 +122,10 @@
                 {
                     dispatch_async(dispatch_get_main_queue(), ^
                     {
-                        [self.delegate didFetchEmpty];
+                        if ([self.delegate respondsToSelector:@selector(didFetchEmpty)])
+                        {
+                            [self.delegate didFetchEmpty];
+                        }
                     });
                 }
             }
@@ -130,7 +136,10 @@
                     NSArray *vms = [self mapToVMSectionedArray:contacts];
                     dispatch_async(dispatch_get_main_queue(), ^
                     {
-                        [self.delegate didFetchData:vms withError:nil];
+                        if ([self.delegate respondsToSelector:@selector(didFetchData:withError:)])
+                        {
+                            [self.delegate didFetchData:vms withError:nil];
+                        }
                     });
                 });
             }

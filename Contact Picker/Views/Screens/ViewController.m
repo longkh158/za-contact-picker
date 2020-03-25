@@ -24,6 +24,7 @@
 @property (nonatomic) UIStackView *navbarTitle;
 @property (nonatomic) UILabel *selectedCountLabel;
 
+@property (weak, nonatomic) IBOutlet UIVisualEffectView *pickerContainerView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UIButton *goToSettingsButton;
 @property (weak, nonatomic) IBOutlet UIStackView *noPermissionView;
@@ -126,6 +127,7 @@
         [self.selectedContacts addObject:vm];
         [self.pickerVC refreshUI];
     }
+    [self updatePickerView];
     [self updateSelectedLabel];
     [self updateSendButton];
 }
@@ -143,11 +145,21 @@
         [self.pickerVC refreshUI];
         [self.contactsVC refreshVM:vm];
     }
+    [self updatePickerView];
     [self updateSelectedLabel];
     [self updateSendButton];
 }
 
 #pragma mark - Helper Functions
+
+- (void)updatePickerView
+{
+    NSUInteger count = [self.selectedContacts count];
+    [UIView animateWithDuration:0.2f animations:^
+    {
+        self.pickerContainerView.alpha = count > 0 ? 1.0 : 0.0;
+    }];
+}
 
 - (void)updateSelectedLabel
 {

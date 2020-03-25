@@ -238,10 +238,9 @@
         }
         else
         {
-            NSDictionary *details = @{
-                NSLocalizedFailureReasonErrorKey: @"fetch contact image error",
-            };
-            NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:FETCH_ERROR userInfo:details];
+            NSError *error = [NSError errorWithCode:FETCH_ERROR
+                                            message:@"fetch contact image error"
+                                          className:[self class]];
             callback(nil, error);
         }
     }

@@ -44,54 +44,56 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Woj-0F-lev">
-                                <rect key="frame" x="0.0" y="780" width="414" height="116"/>
+                            <visualEffectView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Woj-0F-lev">
+                                <rect key="frame" x="0.0" y="782" width="414" height="114"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="8uA-XX-OYE">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="116"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="114"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9H7-Br-VM5" userLabel="Contact Picker View">
+                                            <rect key="frame" x="20" y="20" width="326" height="64"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="64" id="OkI-Az-X4S"/>
+                                            </constraints>
+                                            <connections>
+                                                <segue destination="hId-yd-qIJ" kind="embed" id="Jkm-sA-iie"/>
+                                            </connections>
+                                        </containerView>
+                                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v6G-N6-ZSA">
+                                            <rect key="frame" x="346" y="28" width="48" height="48"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="48" id="t7i-mq-OF9"/>
+                                                <constraint firstAttribute="width" constant="48" id="v26-g8-WVL"/>
+                                            </constraints>
+                                            <state key="normal" image="arrow.right.circle.fill" catalog="system">
+                                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="23" scale="large"/>
+                                            </state>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="9H7-Br-VM5" firstAttribute="top" secondItem="8uA-XX-OYE" secondAttribute="top" constant="20" id="52G-Vr-tHn"/>
+                                        <constraint firstItem="9H7-Br-VM5" firstAttribute="bottom" secondItem="8uA-XX-OYE" secondAttribute="bottom" constant="-30" id="AjK-CS-d7Z"/>
+                                        <constraint firstItem="9H7-Br-VM5" firstAttribute="leading" secondItem="8uA-XX-OYE" secondAttribute="leading" constant="20" id="Fpm-0P-v9V"/>
+                                        <constraint firstItem="v6G-N6-ZSA" firstAttribute="centerY" secondItem="9H7-Br-VM5" secondAttribute="centerY" id="MIE-Hl-eNW"/>
+                                        <constraint firstItem="9H7-Br-VM5" firstAttribute="trailing" secondItem="v6G-N6-ZSA" secondAttribute="leading" id="YD8-VF-9J3"/>
+                                        <constraint firstItem="v6G-N6-ZSA" firstAttribute="trailing" secondItem="8uA-XX-OYE" secondAttribute="trailing" constant="-20" id="mKf-HN-Qtp"/>
+                                    </constraints>
                                 </view>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="116" id="M0i-O1-yWc"/>
-                                </constraints>
                                 <blurEffect style="systemChromeMaterial"/>
                             </visualEffectView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9H7-Br-VM5" userLabel="Contact Picker View">
-                                <rect key="frame" x="20" y="798" width="326" height="64"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="OkI-Az-X4S"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="hId-yd-qIJ" kind="embed" id="Jkm-sA-iie"/>
-                                </connections>
-                            </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v6G-N6-ZSA">
-                                <rect key="frame" x="346" y="806" width="48" height="48"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="t7i-mq-OF9"/>
-                                    <constraint firstAttribute="width" constant="48" id="v26-g8-WVL"/>
-                                </constraints>
-                                <state key="normal" image="arrow.right.circle.fill" catalog="system">
-                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="23" scale="large"/>
-                                </state>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="rLF-SR-gYf" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="1ty-3R-Ha2"/>
                             <constraint firstItem="Woj-0F-lev" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="8BM-bo-05M"/>
                             <constraint firstItem="T7i-t7-0Hh" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="94S-CN-iJP"/>
-                            <constraint firstItem="v6G-N6-ZSA" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-20" id="C6z-GM-kp7"/>
-                            <constraint firstItem="v6G-N6-ZSA" firstAttribute="centerY" secondItem="9H7-Br-VM5" secondAttribute="centerY" id="CZj-Pc-LoG"/>
                             <constraint firstItem="rLF-SR-gYf" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="OH8-B5-MR3"/>
-                            <constraint firstItem="9H7-Br-VM5" firstAttribute="trailing" secondItem="v6G-N6-ZSA" secondAttribute="leading" id="PLt-iY-ViX"/>
                             <constraint firstItem="rLF-SR-gYf" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Wnk-8T-SZv"/>
                             <constraint firstItem="Woj-0F-lev" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="ZhB-Az-PcK"/>
                             <constraint firstItem="Woj-0F-lev" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fjF-P6-nza"/>
-                            <constraint firstItem="9H7-Br-VM5" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="jaM-cA-L7P"/>
                             <constraint firstItem="T7i-t7-0Hh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kdO-Oi-Tnc"/>
                             <constraint firstItem="rLF-SR-gYf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="rSi-RA-339"/>
-                            <constraint firstItem="9H7-Br-VM5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="rqf-JI-1Sj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -99,6 +101,7 @@
                     <connections>
                         <outlet property="goToSettingsButton" destination="E0k-YP-ST3" id="9Nl-ar-WWg"/>
                         <outlet property="noPermissionView" destination="T7i-t7-0Hh" id="lly-T1-d9e"/>
+                        <outlet property="pickerContainerView" destination="Woj-0F-lev" id="pRb-U7-bMo"/>
                         <outlet property="sendButton" destination="v6G-N6-ZSA" id="M6b-vB-lMH"/>
                     </connections>
                 </viewController>
