@@ -18,7 +18,7 @@
 @property (readonly) NSString *identifier;
 
 - (void)awakeFromNib;
-- (void)attachDelegate:(id)delegate;
+- (void)attachDelegate:(id <ContactPickerCellDelegate>)delegate;
 - (void)updateWithViewModel:(ContactTableCellViewModel *)viewModel;
 - (void)setInitialsBgColorForIndexPath:(NSIndexPath *)indexPath;
 

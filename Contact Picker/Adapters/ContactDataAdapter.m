@@ -13,6 +13,7 @@
 #import "AppConstants.h"
 #import "ContactDataAdapterConstants.h"
 #import "NSMutableArray+QueueAdditions.h"
+#import "NSError+ErrorWithCodeAndMessage.h"
 
 @interface ContactDataAdapter () <DataAdapter>
 
@@ -122,10 +123,9 @@
                 [self saveToContacts:contacts];
                 if ([contacts count] == 0)
                 {
-                    NSDictionary *details = @{
-                        NSLocalizedFailureReasonErrorKey: @"fetch contacts empty",
-                    };
-                    NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:FETCH_EMPTY userInfo:details];
+                    NSError *error = [NSError errorWithCode:FETCH_EMPTY
+                                                    message:@"fetch contacts empty"
+                                                  className:[self class]];
                     [self executeCbQueueWithResult:nil withError:error];
                 }
                 else
@@ -135,10 +135,9 @@
             }
             else
             {
-                NSDictionary *details = @{
-                    NSLocalizedFailureReasonErrorKey: @"fetch contacts error",
-                };
-                NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:FETCH_ERROR userInfo:details];
+                NSError *error = [NSError errorWithCode:FETCH_ERROR
+                                                message:@"fetch contacts error"
+                                              className:[self class]];
                 [self executeCbQueueWithResult:nil withError:error];
             }
         });

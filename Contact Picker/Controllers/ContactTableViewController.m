@@ -89,7 +89,7 @@
 
 - (void)attachSearchController:(UISearchController * _Nonnull)controller
 {
-    if (controller)
+    if (controller && [controller isKindOfClass:[UISearchController class]])
     {
          self.search = controller;
     }
@@ -199,7 +199,10 @@
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     NSString *searchText = searchController.searchBar.text;
-    [self.presenter filteredContactsByText:searchText];
+    if (searchText)
+    {
+        [self.presenter filteredContactsByText:searchText];
+    }
 }
 
 #pragma mark - Presenter Protocol

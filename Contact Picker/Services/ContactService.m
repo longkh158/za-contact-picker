@@ -106,7 +106,7 @@
                                                                           callback:
              ^(NSData * _Nonnull imageData, NSError * _Nonnull error)
             {
-                if (!error)
+                if (!error && imageData)
                 {
                     [[ImageCacheService sharedInstance] setImageData:imageData withKey:identifier];
                     _completion(imageData, nil);

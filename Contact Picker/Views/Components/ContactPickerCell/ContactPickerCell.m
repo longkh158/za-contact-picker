@@ -34,16 +34,22 @@
                 forControlEvents:UIControlEventTouchDown];
 }
 
-- (void)attachDelegate:(id)delegate
+- (void)attachDelegate:(id <ContactPickerCellDelegate>)delegate
 {
-    self.delegate = delegate;
+    if ([delegate conformsToProtocol:@protocol(ContactPickerCellDelegate)])
+    {
+        self.delegate = delegate;
+    }
 }
 
-- (void)updateWithViewModel:(ContactTableCellViewModel *)viewModel
+- (void)updateWithViewModel:(ContactTableCellViewModel * _Nonnull)viewModel
 {
-    self.identifier = viewModel.identifier;
-    self.initialsLabel.text = VMMakeInitialsFromName(viewModel.fullName);
-    self.initialsLabel.font = [UIFont boldSystemFontOfSize:16.0];
+    if (viewModel)
+    {
+        self.identifier = viewModel.identifier;
+        self.initialsLabel.text = VMMakeInitialsFromName(viewModel.fullName);
+        self.initialsLabel.font = [UIFont boldSystemFontOfSize:16.0];
+    }
 }
 
 - (void)setInitialsBgColorForIndexPath:(NSIndexPath *)indexPath
@@ -56,7 +62,8 @@
 {
     if (self.delegate)
     {
-        if ([self.delegate respondsToSelector:@selector(handleRemoveSelectedContactWithIdentifier:)])
+        if ([self.delegate respondsToSelector:@selector(handleRemoveSelectedContactWithIdentifier:)] &&
+            self.identifier)
         {
             [self.delegate handleRemoveSelectedContactWithIdentifier:self.identifier];
         }

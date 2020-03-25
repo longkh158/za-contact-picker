@@ -22,11 +22,18 @@
 
 + (instancetype)fromModel:(ZAContact *)model
 {
-    ContactTableCellViewModel *viewModel = [[ContactTableCellViewModel alloc] init];
-    viewModel.identifier = model.identifier;
-    viewModel.hasImageData = model.hasImageData;
-    viewModel.fullName = [model fullName];
-    return viewModel;
+    if (model)
+    {
+        ContactTableCellViewModel *viewModel = [[ContactTableCellViewModel alloc] init];
+        viewModel.identifier = model.identifier;
+        viewModel.hasImageData = model.hasImageData;
+        viewModel.fullName = [model fullName];
+        return viewModel;
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 @end

@@ -18,8 +18,6 @@
 
 @property NSMutableArray<ContactTableCellViewModel *> *selected;
 
-- (void)setupBackground;
-
 @end
 
 @implementation ContactPickerController
@@ -86,7 +84,7 @@
 {
     if (self.selected)
     {
-        ContactTableCellViewModel *vm = self.selected[indexPath.section];
+        ContactTableCellViewModel *vm = self.selected[indexPath.row];
         ContactPickerCell *cell = [self.collectionView
                                    dequeueReusableCellWithReuseIdentifier:COLLECTION_CELL_REUSE_ID
                                                              forIndexPath:indexPath];

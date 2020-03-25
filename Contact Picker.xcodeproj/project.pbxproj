@@ -30,6 +30,7 @@
 		A16236472420B4EA006E36C8 /* ContactTableViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A16236462420B4EA006E36C8 /* ContactTableViewPresenter.m */; };
 		A162364B2420B71D006E36C8 /* ContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A162364A2420B71D006E36C8 /* ContactTableCell.m */; };
 		A162364E2420BBA2006E36C8 /* ContactTableCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A162364D2420BBA2006E36C8 /* ContactTableCellViewModel.m */; };
+		A165043A242B3C9B000940EA /* NSError+ErrorWithCodeAndMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A1650439242B3C9B000940EA /* NSError+ErrorWithCodeAndMessage.m */; };
 		A178CB872429A9850079F5DA /* ContactPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A178CB862429A9850079F5DA /* ContactPickerCell.xib */; };
 		A178CB8A2429AA3D0079F5DA /* ContactPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A178CB892429AA3D0079F5DA /* ContactPickerCell.m */; };
 		A178CB8E2429AEEE0079F5DA /* VMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A178CB8D2429AEEE0079F5DA /* VMHelper.m */; };
@@ -107,6 +108,8 @@
 		A162364C2420BB0E006E36C8 /* ContactTableCellViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTableCellViewModel.h; sourceTree = "<group>"; };
 		A162364D2420BBA2006E36C8 /* ContactTableCellViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTableCellViewModel.m; sourceTree = "<group>"; };
 		A162364F2420BC14006E36C8 /* ZAViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZAViewModel.h; sourceTree = "<group>"; };
+		A1650438242B3C9B000940EA /* NSError+ErrorWithCodeAndMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSError+ErrorWithCodeAndMessage.h"; sourceTree = "<group>"; };
+		A1650439242B3C9B000940EA /* NSError+ErrorWithCodeAndMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSError+ErrorWithCodeAndMessage.m"; sourceTree = "<group>"; };
 		A178CB862429A9850079F5DA /* ContactPickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactPickerCell.xib; sourceTree = "<group>"; };
 		A178CB882429A9A40079F5DA /* ContactPickerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactPickerCell.h; sourceTree = "<group>"; };
 		A178CB892429AA3D0079F5DA /* ContactPickerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactPickerCell.m; sourceTree = "<group>"; };
@@ -322,6 +325,8 @@
 				A156F7CB242312DC00AD030E /* NSDictionary+SortedDictionary.m */,
 				A1FE64D0242463210062FDE4 /* NSMutableArray+QueueAdditions.h */,
 				A1FE64D1242463210062FDE4 /* NSMutableArray+QueueAdditions.m */,
+				A1650438242B3C9B000940EA /* NSError+ErrorWithCodeAndMessage.h */,
+				A1650439242B3C9B000940EA /* NSError+ErrorWithCodeAndMessage.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -601,6 +606,7 @@
 				A16235F924206C8F006E36C8 /* ViewController.m in Sources */,
 				A16235F324206C8F006E36C8 /* AppDelegate.m in Sources */,
 				A1FE64D2242463210062FDE4 /* NSMutableArray+QueueAdditions.m in Sources */,
+				A165043A242B3C9B000940EA /* NSError+ErrorWithCodeAndMessage.m in Sources */,
 				A162363A2420810E006E36C8 /* ZAContact.m in Sources */,
 				A17F55772428CB4D000FE44D /* ContactPickerController.m in Sources */,
 				A178CB8E2429AEEE0079F5DA /* VMHelper.m in Sources */,

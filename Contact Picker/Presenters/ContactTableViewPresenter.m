@@ -35,7 +35,10 @@
 
 - (void)attachView:(id <ContactTableViewPresenterProtocol>)view
 {
-    self.delegate = view;
+    if ([view conformsToProtocol:@protocol(ContactTableViewPresenterProtocol)])
+    {
+        self.delegate = view;
+    }
 }
 
 - (void)getAllContacts
