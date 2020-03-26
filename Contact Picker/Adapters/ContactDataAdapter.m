@@ -189,7 +189,8 @@
     NSArray *sortedContacts = [contacts sortedArrayUsingComparator:contactSortOrder];
     NSCharacterSet __block *charSet = [NSCharacterSet letterCharacterSet];
     NSMutableDictionary<NSString *, NSMutableArray *> __block *result = [NSMutableDictionary dictionary];
-    [sortedContacts enumerateObjectsUsingBlock:^(CNContact *_Nonnull cnContact, NSUInteger idx, BOOL * _Nonnull stop) {
+    [sortedContacts enumerateObjectsUsingBlock:^(CNContact *_Nonnull cnContact, NSUInteger idx, BOOL * _Nonnull stop)
+    {
         NSString *key = [[NSString alloc] init];
         NSString *fullName = [CNContactFormatter stringFromContact:cnContact
                                                              style:CNContactFormatterStyleFullName];
@@ -243,6 +244,64 @@
                                           className:[self class]];
             callback(nil, error);
         }
+    }
+}
+
+- (void)contactWithIdentifier:(NSString *)identifier
+                  keysToFetch:(NSArray<ContactDataKey> * _Nullable)keysToFetch
+                   usingQueue:(dispatch_queue_t)queue
+                     callback:(FetchDataCallback)callback
+{
+    if (callback && identifier)
+    {
+        NSMutableArray *keys = [NSMutableArray arrayWithArray:[ContactDataAdapterConstants allowedKeys]];
+        if (keysToFetch)
+        {
+            keys = [[self filteredKeysToFetch:keysToFetch] mutableCopy];
+        }
+        NSError *fetchError;
+        CNContact *contact = [self.store unifiedContactWithIdentifier:identifier
+                                                            keysToFetch:keys
+                                                                  error:&fetchError];
+        if (fetchError)
+        {
+            NSError *error = [NSError errorWithCode:FETCH_ERROR
+                                            message:@"fetch contact error"
+                                          className:[self class]];
+            callback(nil, error);
+        }
+        else if (contact)
+        {
+            callback([self sortedContactsDict:@[contact]], nil);
+        }
+    }
+}
+
+- (void)createContact:(ZAContact *)contact
+           usingQueue:(dispatch_queue_t _Nullable)queue
+             callback:(FetchDataCallback _Nullable)callback
+{
+    if (callback)
+    {
+        CNMutableContact *cnContact = [contact toCNContact];
+        CNSaveRequest *request = [[CNSaveRequest alloc] init];
+        [request addContact:cnContact toContainerWithIdentifier:nil];
+        NSError __block *saveError;
+        dispatch_queue_t queueToExecute = queue ? queue : self.internalQueue;
+        dispatch_async(queueToExecute, ^{
+           [self.store executeSaveRequest:request error:&saveError];
+            if (!saveError)
+            {
+                callback(nil, nil);
+            }
+            else
+            {
+                NSError *error = [NSError errorWithCode:CREATE_ERROR
+                                                message:@"cannot create contact"
+                                              className:[self class]];
+                callback(nil, error);
+            }
+        });
     }
 }
 

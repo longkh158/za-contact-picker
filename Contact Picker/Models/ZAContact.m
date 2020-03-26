@@ -35,6 +35,24 @@
     return self;
 }
 
+- (CNMutableContact *)toCNContact
+{
+    CNMutableContact *mutableContact = [[CNMutableContact alloc] init];
+    if (self.firstName)
+    {
+        mutableContact.givenName = self.firstName;
+    }
+    if (self.lastName)
+    {
+        mutableContact.familyName = self.lastName;
+    }
+    if (self.phoneNumbers)
+    {
+        mutableContact.phoneNumbers = self.phoneNumbers;
+    }
+    return mutableContact;
+}
+
 + (instancetype)contactWithCNContact:(CNContact *)contact
 {
     return [[ZAContact alloc] initWithCNContact:contact];

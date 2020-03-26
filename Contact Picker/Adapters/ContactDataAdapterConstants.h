@@ -12,6 +12,7 @@
 static NSInteger FETCH_ERROR = 500;
 static NSInteger FETCH_EMPTY = 404;
 static NSInteger FETCH_UNAUTHORIZED = 401;
+static NSInteger CREATE_ERROR = 501;
 
 typedef enum ContactDataAuthorizationStatus : NSInteger
 {

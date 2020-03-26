@@ -20,6 +20,7 @@
 @property (readonly) BOOL hasImageData;
 
 - (NSString *)fullName;
+- (CNMutableContact *)toCNContact;
 + (instancetype)contactWithCNContact:(CNContact *)contact;
 
 @end

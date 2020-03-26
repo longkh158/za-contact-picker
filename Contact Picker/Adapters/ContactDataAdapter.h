@@ -31,7 +31,14 @@ typedef void (^RequestAccessCompletionHandler)(BOOL granted, NSError * _Nullable
                            usingQueue:(dispatch_queue_t _Nullable)queue
                              callback:(FetchDataCallback _Nullable)callback;
 - (void)imageDataForContactWithIdentifier:(NSString *)identifier
-                                     callback:(void (^)(NSData * imageData, NSError * error))callback;
+                                 callback:(void (^)(NSData * imageData, NSError * error))callback;
+- (void)contactWithIdentifier:(NSString *)identifier
+                   usingQueue:(dispatch_queue_t _Nullable)queue
+                     callback:(FetchDataCallback)callback;
+- (void)createContact:(ZAContact *)contact
+          keysToFetch:(NSArray<ContactDataKey> * _Nullable)keysToFetch
+           usingQueue:(dispatch_queue_t _Nullable)queue
+             callback:(FetchDataCallback _Nullable)callback;
 
 + (ContactDataAuthorizationStatus)contactDataAuthorizationStatus;
 
