@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Nimbus/NITableViewModel.h>
 #import "AppConstants.h"
 #import "ViewController.h"
 #import "ContactTableViewController.h"

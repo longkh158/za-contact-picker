@@ -73,7 +73,8 @@
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^
         {
-            [self.service fetchImageDataOfContactWithIdentifier:identifier withCompletion:^(NSData * _Nullable imageData, NSError * _Nullable error)
+            [self.service fetchImageDataOfContactWithIdentifier:identifier
+                                                 withCompletion:^(NSData * _Nullable imageData, NSError * _Nullable error)
             {
                 if (!error)
                 {

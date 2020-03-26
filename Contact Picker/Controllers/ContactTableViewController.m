@@ -97,7 +97,8 @@
 
 - (void)refreshVM:(ContactTableCellViewModel *)vm
 {
-    NSIndexPath *indexPath = [self.model indexPathForObject:vm];
+//    [self.tableView reloadData];
+    NSIndexPath *indexPath = [(NITableViewModel *)self.tableView.dataSource indexPathForObject:vm];
     if (!indexPath)
     {
         indexPath = [self.searchModel indexPathForObject:vm];
@@ -188,7 +189,7 @@
 
 #pragma mark - UISearchControllerDelegate Protocol
 
-- (void)didDismissSearchController:(UISearchController *)searchController
+- (void)willDismissSearchController:(UISearchController *)searchController
 {
     self.tableView.dataSource = self.model;
     [self.tableView reloadData];
@@ -232,8 +233,11 @@
     }
     else
     {
-        self.model = [[NITableViewModel alloc] initWithSectionedArray:data delegate:self];
-        [self setupViewModel:self.model withSearch:NO withSummary:NO];
+        if (!self.model)
+        {
+            self.model = [[NITableViewModel alloc] initWithSectionedArray:data delegate:self];
+            [self setupViewModel:self.model withSearch:NO withSummary:NO];
+        }
     }
     [self.indicator stopAnimating];
 }
