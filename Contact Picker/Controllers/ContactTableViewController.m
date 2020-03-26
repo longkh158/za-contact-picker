@@ -97,12 +97,8 @@
 
 - (void)refreshVM:(ContactTableCellViewModel *)vm
 {
-//    [self.tableView reloadData];
     NSIndexPath *indexPath = [(NITableViewModel *)self.tableView.dataSource indexPathForObject:vm];
-    if (!indexPath)
-    {
-        indexPath = [self.searchModel indexPathForObject:vm];
-    }
+    NSAssert(indexPath != nil, @"expect NSIndexPath, null given");
     [self.tableView reloadRowsAtIndexPaths:@[indexPath]
                           withRowAnimation:UITableViewRowAnimationAutomatic];
 }
@@ -218,7 +214,7 @@
 {
     if (error)
     {
-        NSLog(@"no permission to access contacts");
+        NSLog(@"fetch data error %@", error.localizedDescription);
         self.tableView.hidden = YES;
         ViewController *parent = (ViewController *)self.parentViewController;
         if ([parent respondsToSelector:@selector(showErrorView:)])
@@ -245,9 +241,9 @@
 #pragma mark - NITableViewModelDelegate Protocol
 
 - (ContactTableCell *)tableViewModel:(NITableViewModel *)tableViewModel
-                   cellForTableView:(UITableView *)tableView
-                        atIndexPath:(NSIndexPath *)indexPath
-                         withObject:(ContactTableCellViewModel *)object
+                    cellForTableView:(UITableView *)tableView
+                         atIndexPath:(NSIndexPath *)indexPath
+                          withObject:(ContactTableCellViewModel *)object
 {
     ContactTableCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TABLE_CELL_REUSE_ID
                                                                   forIndexPath:indexPath];
